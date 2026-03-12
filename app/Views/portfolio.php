@@ -10,8 +10,14 @@
             <div class="card-header">아리랑문자</div>
             <div class="card-body">
                 <p class="badge text-bg-secondary">단독신규개발</p>
+            <div class="my-2 gap-1 d-flex flex-wrap">
+                <span class="btn btn-sm btn-info"># 반응형</span>
+                <span class="btn btn-sm btn-info"># 대량문자</span>
+                <span class="btn btn-sm btn-info"># 알림톡</span>
+                <span class="btn btn-sm btn-info"># 메일</span>
+            </div>
             <div class="gap-1 d-flex">
-                <span class="btn btn-sm btn-primary">PHP Legacy</span>
+                <span class="btn bg-gradiant btn-sm btn-primary">PHP Legacy</span>
             </div>
             </div>
         </div>

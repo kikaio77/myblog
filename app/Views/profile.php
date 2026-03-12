@@ -3,7 +3,7 @@
 
 <?= $this->section('content') ?>
 <h4 class="content-title">Profile</h4>
-<article class="p-3">
+<article class="p-3 article">
 <h6 class="display-6">임승혁(IM SEUNG HYUK)</h6>
 <img class="img-fluid border mb-3" src="assets/images/profile.png" alt="profile_photo">
 <ul class="mb-5">

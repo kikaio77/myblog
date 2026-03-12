@@ -9,6 +9,7 @@
 			<?= $_ENV['app.shortIntroduce'] ?>
 		</div>
 	</li>
+	<li><a href="/posts/form" class="fs-6"><i class="me-2 xi-pen"></i>글쓰기</a></li>
 </ul>
 <div class="sb-menu">
 	<ul class="nav nav-pills sb-menu-item">
@@ -22,8 +23,7 @@
 		<h5 class="sb-menu-heading"><i class="xi-view-list me-2"></i>카테고리</h5>
 		<li class="nav-item sb-menu-item-child">
 			<a href="/main" class="nav-link sb-menu-link active">전체보기</a>
-			<a href="/posts/category/1" class="nav-link sb-menu-link">PHP <span class="ms-1 badge text-bg-warning">15</span></a>
-			<a href="#" class="nav-link sb-menu-link">CodeIgniter4<span class="ms-1 badge text-bg-warning">15</span></a>
+			<?= view_cell('App\Cells\CategoryCell::subNavCategory', [], 18000, 'newSubNav') ?>
 		</li>
 	</ul>
 </div>

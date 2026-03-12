@@ -53,11 +53,16 @@ body.sidenav-toggled .layoutContent::before{ display: block;}
 .pointer::before{ content: ""; display: inline-block;  vertical-align: middle; width: 4px; height:4px; background-color: #599080; margin-right: 8px;}
 .pointer.primary::before{ background-color: #0d6efd;}
 .pointer.secondary::before{ background-color: #6c757d;}
-article{ width: 100%; border-radius: 10px; border: 1px solid #eee; background-color: #ffffff; }
+article{}
+article.article{ width: 100%; border-radius: 10px; border: 1px solid #eee; background-color: #ffffff; }
 footer{ background-color: #ccc;}
-
-.table.table-border{ border: 1px solid #599080; color: #599080 !important;}
+/* 
+.table.table-border{ border: none; border-top: 1px solid #599080; border-bottom: 1px solid #599080; color: #599080 !important; border-radius: 6px;} 
+.table.table-border tr > td:not(:last-child) { border-right: 1px solid #599080;}
+.table.table-border tr > th:not(:last-child) { border-right: 1px solid #599080;} */
+.ql-toolbar{border: 1px solid #599080 !important;}
 .bg-nowwe{border: 1px solid #ffffff; background-color: #599080;}
+.border-nowwe{border: 1px solid #599080 !important;}
 .bg-nowwe:hover{ transform: translateY(-10px); transition: all 0.15s ease-in-out; box-shadow: 0 0 6px 0 #FFD06B;}
 @media all and (min-width: 480px) {
     #topNav .navbar-brand{ width: 234px;}

@@ -12,14 +12,15 @@ class Home extends BaseController
 
         $posts = $postModel->orderby('id', 'DESC')->findAll();
         $postsCnt = $postModel->countAll();
-        
+       
+
         foreach ($posts as $idx => &$row) {
             $row->no = $postsCnt - $idx;
         }
         
         $data['posts'] = $posts;
         $data['postCnt'] = $postsCnt;
-
+        
         return view('main', $data);
     }
 
