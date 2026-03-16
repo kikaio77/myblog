@@ -15,7 +15,7 @@ class CategoryCell
         $html = [];
 
         foreach ($categories as $category) {
-            $html[] = "<a href='/posts/category/{$category->id}' class='nav-link sb-menu-link'>{$category->name}</a>";
+            $html[] = "<a href='/category/{$category->name}/post' class='nav-link sb-menu-link'>{$category->name}</a>";
         }
         return implode(' ', $html);
     }   

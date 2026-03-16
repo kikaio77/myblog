@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use HTMLPurifier;
+use stdClass;
 
 class PostController extends BaseController
 {
@@ -28,14 +30,20 @@ class PostController extends BaseController
         $categoryModel = model('category');
         $postModel = model('post');
 
-        log_message('error', print_r($id, true));
+        $columns = ['id', 'category_id', 'title', 'content', 'views', 'created_at'];
+
+        $data = [];
 
         if ($id) {
-            $data['post'] = $postModel->find($id); 
+            $data['post'] = $postModel->select($columns)->find($id); 
             $data['form']['method'] = 'PUT';
             $data['form']['action'] = "/posts/{$id}";
 
         } else {
+            $data['post'] = new stdClass();
+            foreach ($columns as $column) 
+                $data['post']->{$column} = '';
+            
             $data['form']['method'] = 'POST';
             $data['form']['action'] = "/posts";
         }
@@ -47,7 +55,33 @@ class PostController extends BaseController
 
     public function update($id)
     {
-        log_message('error', print_r($this->request->getPost(), true));
+        $purifier = new HTMLPurifier();
+
+        $data = $this->request->getVar();
+
+        $data['content'] = $purifier->purify($data['content']);
         
+        $postModel = model('post');
+
+        $postModel->save($data);
+
+        return redirect()->route("posts.list", [$id]);
+
+    }
+
+    public function new()
+    {
+        $purifier = new HTMLPurifier();
+
+        $data = $this->request->getPost();
+
+        $data['content'] = $purifier->purify($data['content']);
+
+        $postModel = model('post');
+
+        $postModel->insert($data);
+
+        return redirect()->to('/main');
+
     }
 }

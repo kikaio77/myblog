@@ -10,8 +10,8 @@ body{ height: 100%; font-family: 'Wanted Sans Variable', sans-serif; background-
 #topNav i{ font-size: 1.3rem; color: #ffffff;}
 #topNav .navbar-brand h6{ color: #ffffff;}
 .layoutWrap{ display: flex; min-height:   100%;}
-.layoutSideNav{ overflow-y: auto; scrollbar-width: thin; z-index: 999; position: fixed; top: 0; left: 0; right: 0; width: 250px; background-color: #ffffff; transform: translateX(-250px); transition: transform 0.3s ease-in-out; height: 100vh; border-left: 1px solid #eee; }
-.layoutSideNav_nav{ padding-top: 50px; width: 100%;}
+.layoutSideNav{  overflow-y: auto; scrollbar-width: thin; z-index: 999; position: fixed; top: 50px; left: 0; right: 0; width: 250px; background-color: #ffffff; transform: translateX(-250px); transition: transform 0.3s ease-in-out; height: calc(100vh - 50px); border-left: 1px solid #eee; }
+.layoutSideNav_nav{  width: 100%;}
 
 .layoutContent {
     display: flex;

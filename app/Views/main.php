@@ -15,7 +15,7 @@
                 <?php foreach ($posts as $post): ?>
                 <tr>
                     <td><?= $post->no ?></td>
-                    <td><a href="/posts/<?= $post->id ?>"><?= $post->title ?></a></td>
+                    <td><a href="/category/<?= $post->id ?>/post"><?= $post->title ?></a></td>
                     <td><?= $post->created_at ?></td>
                 </tr>
                 <?php endforeach; ?>
