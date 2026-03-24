@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xpressengine/XEIcon@2.3.3/xeicon.min.css">
 	<link rel="stylesheet" href="/assets/css/style.css">
 	<script src="/assets/js/common.js"></script>
-	<script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/js/bootstrap.bundle.min.js"></script>
 	<title> <?= $_ENV['app.title'] ?></title>
 	<?= $this->renderSection('head') ?>
 </head>

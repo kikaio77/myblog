@@ -10,14 +10,36 @@ use stdClass;
 class PostController extends BaseController
 {
     public function list($id = null)
-    {
+    {   
         $postModel = model('post');
 
+        $session = session();
+        $data = [];
         if ($id) {
+            
+            $uuid = session_id();
+
+            $redis = new \Redis();
+            $redis->connect('127.0.0.1', 6379);
+            $redis->auth('tmddb1006');
+            
+            $views = $redis->hget("$uuid:blog_views", $id);
+            
             $data['post'] = $postModel->find($id);
+            $data['pager'] = null;
+            if (! $views) {
+                $redis->hset("{$uuid}:blog_views", $id, 1);
+                $postModel->update($id, ['views' => $data['post']->views + 1]);
+            }
+
             $returnView = 'postDetail';
         } else {
-            $data['posts'] = $postModel->findAll();
+           log_message('error', $postModel->pager);
+            $data['posts'] = $postModel->paginate(10, 'posts');
+            $data['pager'] = $postModel->pager;
+
+           
+
             $returnView = 'main'; 
         }
 

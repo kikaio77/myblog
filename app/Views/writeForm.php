@@ -3,6 +3,7 @@
 <?= $this->section('head') ?>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<?= csrf_meta() ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -39,6 +40,7 @@
 
 <?= $this->section('js') ?>
 <script>
+
 const editor = new Quill('#editor', { 
     theme: 'snow',
     modules: {
@@ -61,8 +63,7 @@ const editor = new Quill('#editor', {
                         for (let i = 0; i < files.length; i++) {
                             formData.append('images[]', files[i]);
                         }
-
-                        fetch('/upload/image', {method: 'POST', body: formData})
+                        fetch('/upload/image', {headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]')?.content || '' },method: 'POST', body: formData})
                             .then(res => res.json())
                             .then(d => {
                                 let range = editor.getSelection();

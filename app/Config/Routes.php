@@ -25,3 +25,15 @@ $routes->group('category', static function($routes) {
 $routes->get('/main', 'Home::index');
 $routes->get('/profile', 'Home::profile');
 $routes->get('/portfolio', 'Home::portfolio');
+
+$routes->group('login', static function($routes) {
+    $routes->get('form', 'Login');
+    $routes->post('in', 'Login::in');
+    $routes->get('out', 'Login::out');
+
+});
+
+$routes->group('join', static function($routes) {
+    $routes->get('/', 'Join');
+    $routes->post('submit', 'Join::submit');
+});

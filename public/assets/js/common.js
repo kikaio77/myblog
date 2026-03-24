@@ -5,9 +5,16 @@ window.addEventListener('DOMContentLoaded', () => {
         sidebarToggle.addEventListener('click', e => {
             e.preventDefault();
             document.body.classList.toggle('sidenav-toggled');
+            localStorage.setItem('sidenav-toggle', document.body.classList.contains('sidenav-toggled'));
         });
     }
-
+    console.log(localStorage.getItem('sidenav-toggle'));
+    if (localStorage.getItem('sidenav-toggle')) {
+        console.log('이거타지?');
+         document.body.classList.add('sidenav-toggled');
+    } else {
+         document.body.classList.remove('sidenav-toggled');
+    }
     const sidebarMenuItems = document.querySelectorAll('.layoutSideNav_nav .sb-menu .sb-menu-link');
 
     for (let i = 0; i < sidebarMenuItems.length; i++) {
@@ -21,11 +28,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth >= 992) {
-            document.body.classList.add('sidenav-toggled');
+        if (window.innerWidth >= 992 && localStorage.getItem('sidenav-toggle')) {
+            // document.body.classList.add('sidenav-toggled');
         } else {
-            document.body.classList.remove('sidenav-toggled');
+            // document.body.classList.remove('sidenav-toggled');
         }
     });
+
+    function getCsrfToken() {
+        return document.querySelector('meta[name="X-CSRF-TOKEN"]')?.content || '';
+    }
 });
 

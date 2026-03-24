@@ -10,7 +10,7 @@ class Home extends BaseController
     {
         $postModel = model('post');
 
-        $posts = $postModel->orderby('id', 'DESC')->findAll();
+        $posts = $postModel->orderby('id', 'DESC')->paginate(10);
         $postsCnt = $postModel->countAll();
        
 
@@ -20,6 +20,7 @@ class Home extends BaseController
         
         $data['posts'] = $posts;
         $data['postCnt'] = $postsCnt;
+        $data['pager'] = $postModel->pager;
         
         return view('main', $data);
     }

@@ -8,7 +8,7 @@ class Post extends Model
 {
     protected $primaryKey = 'id';
     protected $table = 'posts';
-    protected $allowedFields = ['category_id', 'title', 'content'];
+    protected $allowedFields = ['category_id', 'title', 'content', 'views'];
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;
     protected $returnType = 'object';

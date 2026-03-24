@@ -10,17 +10,22 @@
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
                 <tbody>
                 <?php foreach ($posts as $post): ?>
                 <tr>
                     <td><?= $post->no ?></td>
-                    <td><a href="/category/<?= $post->id ?>/post"><?= $post->title ?></a></td>
+                    <td><a href="/posts/<?= $post->id ?>"><?= $post->title ?></a></td>
                     <td><?= $post->created_at ?></td>
+                    <td><?= $post->views ?></td>
                 </tr>
                 <?php endforeach; ?>
                 </tbody>
             </thead>
         </table>
+        <div class="text-center d-flex justify-content-center">
+            <?= $pager->links() ?>
+        </div>
     </article>
 <?= $this->endSection() ?>
