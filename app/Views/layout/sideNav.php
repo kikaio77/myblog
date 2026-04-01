@@ -4,6 +4,14 @@
 	<li class="profileImg mb-2 d-flex justify-content-center align-items-center">
 		<img class="img-fluid rounded shadow-sm" src="/assets/images/profile.png" alt="profile_img">
 	</li>
+	<li class="visitor-views row d-grid gap-1 mb-3 px-2">
+		<div class="d-flex">
+			<span>Today: </span><span class="ms-auto"><?= number_format($todayVisitors) ?></span>
+		</div>
+		<div class="d-flex">
+			<span>Month: </span><span class="ms-auto"><?= number_format(123123) ?></span>
+		</div>
+	</li>
 	<li class="profileIntro">
 		<div class="text-center">
 			<?= $_ENV['app.shortIntroduce'] ?>
