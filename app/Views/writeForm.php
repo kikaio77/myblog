@@ -14,16 +14,16 @@
         <input type="hidden" name="_method" value="<?= $form['method'] ?>">
         <input type="hidden" name="id" value="<?= $post->id ?>" id="id">
         <input type="hidden" name="content" id="content" value="">
-        <div class="ms-auto col-6 mb-1 col-sm-3">
-            <select name="category_id" id="category_id" class="form-select-sm form-select">
+        <div class="ms-auto col-6 mb-2 col-sm-3">
+            <select name="category_id" id="category_id" class="form-select">
                 <option value="">카테고리 선택</option>
                 <?php foreach ($categories as $category): ?>
                 <option value="<?= $category->id ?>" <?= $post->category_id === $category->id ? 'selected' : '' ?> > <?= $category->name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col">
-          <input type="text" class="form-control" name="title" id="title" value="<?= $post->title ?>">
+        <div class="col mb-2">
+          <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= $post->title ?>">
         </div>
         <div id="editor" class="border-nowwe bg-white" style="min-height: 430px;">
             <?= $post->content ?>

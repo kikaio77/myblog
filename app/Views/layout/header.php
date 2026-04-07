@@ -1,8 +1,8 @@
 <nav id="topNav" class="navbar navbar-expand-lg shadow-sm bg-gradient">
-	<div class="container-fluid d-flex justify-content-start align-items-center">
+	<div class="container-fluid">
 		<a href="/main" class="navbar-brand d-flex align-items-center me-0"><i class="xi-php me-2"></i><h6 class="m-0"><?= $_ENV['app.name'] ?></h6></a>
-		<a class="topNav_hamburger ms-auto ms-md-0" role="button"><i class="xi-bars"></i></a>
-		<div class="d-none d-md-block ms-md-auto dropstart">
+		<a class="topNav_hamburger order-2 order-lg-1" role="button"><i class="xi-bars"></i></a>
+		<div class="d-flex dropstart ms-auto me-2 order-1 order-lg-2">
 			<a data-bs-toggle="dropdown" aria-expanded="false" role="button"><i class="xi-ellipsis-h"></i></a>
 			<ul class="dropdown-menu">
 				<?php if (session()->has('user')): ?>

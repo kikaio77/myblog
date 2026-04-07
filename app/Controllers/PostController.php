@@ -19,9 +19,7 @@ class PostController extends BaseController
             
             $uuid = session_id();
 
-            $redis = new \Redis();
-            $redis->connect('127.0.0.1', 6379);
-            $redis->auth('tmddb1006');
+            $redis = \Config\Services::redis();
             
             $views = $redis->hget("$uuid:blog_views", $id);
             
@@ -80,7 +78,8 @@ class PostController extends BaseController
         $purifier = new HTMLPurifier();
 
         $data = $this->request->getVar();
-
+        $data['title'] = empty($data['title']) ? '제목없음' : $data['title'];
+        $data['content'] = str_replace('<img ', '<img class="img-fluid" ', $data['content']);
         $data['content'] = $purifier->purify($data['content']);
         
         $postModel = model('post');
@@ -93,6 +92,28 @@ class PostController extends BaseController
 
     public function new()
     {
+        $rules = [
+            'title' => 'required|max_length[40]',
+            'content' => 'required',
+            'category_id' => 'required|integer'
+        ];
+
+        $messages = [
+            'title' => [
+                'required' => '제목을 입력해주세요.',
+                'max' => '제목은 최대 40자 까지 입니다.'
+            ],
+            'content' => ['required' => '내용은 반드시 입력해야합니다.'],
+            'category_id' => [
+                'required' => '카테고리를 반드시 선택해주세요.',
+                'integer' => '반드시 숫자여야 합니다.'
+            ],
+        ];
+
+        if (! $this->validate($rules, $messages)) {
+            echo print_r($this->validator->getErrors(), true);
+            exit;
+        }
         $purifier = new HTMLPurifier();
 
         $data = $this->request->getPost();

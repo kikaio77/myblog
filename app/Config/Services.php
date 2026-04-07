@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseService;
+use Redis;
 
 /**
  * Services Configuration file.
@@ -29,4 +30,34 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    
+    // public static function redis($getShared = true)
+    // {
+    //     if ($getShared) {
+    //        return static::getSharedInstance('redis');
+    //     }
+        
+    //     $config = config('redis');
+
+    //     $redis = new Redis();
+    //     $redis->connect($config->host, $config->port, $config->timeout);
+    //     $redis->auth($config->password);
+
+    //     return $redis;
+    
+    // }
+     
+    public static function redis($getShared = true) 
+    {
+        if ($getShared) {
+            return static::getSharedInstance('redis');
+        }
+
+        $redis = new \Redis();
+        $redis->connect($_ENV['redis.connection.host'], $_ENV['redis.connection.port']);
+        $redis->auth($_ENV['redis.connection.password']);
+
+        return $redis;
+    }
 }

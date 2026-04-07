@@ -8,33 +8,26 @@ class Home extends BaseController
 {
     public function index(): string
     {   
-        $redis = new \Redis();
-        $redis->connect('127.0.0.1', 6379);
-        $redis->auth('tmddb1006');
-
-        $todayVisitors = $redis->rawCommand('PFCOUNT', 'today:visitors');
-
         $page = $this->request->getGet('page') ?? 1;
         $postModel = model('post');
 
         $postsCnt = $postModel->countAll();
 
-        $posts = $postModel->orderby('id', 'DESC')->paginate(1);
+        $posts = $postModel->orderby('id', 'DESC')->paginate(10);
         
         $no = 1;
 
         foreach ($posts as $idx => &$row) {
             $row->no = $no;
+            $row->title = empty($row->title) ? '제목없음' : $row->title;
             $no++;
         }
         
-        log_message('error', print_r($posts, true));
-
-        
+        $this->logger->debug('하이');
         $data['posts'] = $posts;
         $data['postCnt'] = $postsCnt;
         $data['pager'] = $postModel->pager;
-        $data['todayVisitors'] = $todayVisitors;
+        
         return view('main', $data);
     }
 

@@ -11,27 +11,35 @@ class VisitorCount implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        helper('cookie');
-        
-        $redis = new  \Redis();
-        $redis->connect('127.0.0.1', 6379);
-        $redis->auth('tmddb1006');
 
-        if (! has_cookie('today_visitor')) {
-        
-            $ip = $request->getIPAddress();
+        if (! $request->getCookie('today_visitor')) {
+            log_message('emergency', '없음');
+            helper('cookie');
 
-            $redis->rawCommand('PFADD', 'today:visitors', $ip);
-            
+            $redis = service('redis');
+
             $now = new DateTime();
             $endTime = new DateTime($now->format('Y-m-d') . ' 23:59:59');
+
+            $todayCount = $redis->get('day:' . $now->format('Y-m-d'));
+            $monthCount = $redis->get('month:' . $now->format('Y-m'));
+            
+            if (! $todayCount) {
+               $redis->set('day:' . $now->format('Y-m-d'), 1);
+            } else {
+                $redis->incr('day:' . $now->format('Y-m-d'));
+            }
+
+            if (! $monthCount) {
+                $redis->set('month:' . $now->format('Y-m'), 1);
+            } else {
+                $redis->incr('month:' . $now->format('Y-m'));
+            }
+
             $expired = $endTime->getTimestamp() - $now->getTimestamp();
 
-
-            set_cookie('today_visitor', 'Y', $expired, $_SERVER['HTTP_HOST'], '/');
+           set_cookie('today_visitor', 'Y', $expired);
         }
-
-        log_message('error', get_cookie('today_visitor'));
 
     }
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
