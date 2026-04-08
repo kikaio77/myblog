@@ -6,7 +6,7 @@
 			<a data-bs-toggle="dropdown" aria-expanded="false" role="button"><i class="xi-ellipsis-h"></i></a>
 			<ul class="dropdown-menu">
 				<?php if (session()->has('user')): ?>
-				<li><a class="dropdown-item d-inline-flex align-items-center"><i class="xi-user me-2 text-muted"></i><?= session()->get('user')->nickname ?>님</a></li>
+				<li><a class="dropdown-item d-inline-flex align-items-center"><i class="xi-user me-2 text-muted"></i><?= session()->get('user')->nick ?>&nbsp;님</a></li>
 				<li><a href="/login/out" class="dropdown-item d-inline-flex align-items-center"><i class="xi-log-in me-2 text-muted"></i>로그아웃</a></li>
 				<?php else: ?>
 				<li><a href="/login/form" class="dropdown-item d-inline-flex align-items-center"><i class="xi-log-in me-2 text-muted"></i>로그인</a></li>

@@ -20,7 +20,7 @@ $routes->group('upload', static function($routes) {
 });
 
 $routes->group('category', static function($routes) {
-    $routes->get('(:segment)/post', 'Category::list/$1');
+    $routes->get('(:segment)/post', 'Category::list/$1', ['as' => 'category.post']);
 });
 $routes->get('/main', 'Home::index');
 $routes->get('/profile', 'Home::profile');

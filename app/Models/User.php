@@ -8,7 +8,7 @@ class User extends Model
 {
     protected $table = 'users';
     protected $returnType = 'object';
-    protected $allowedFields = ['email', 'password', 'nickname', 'created_at'];
+    protected $allowedFields = ['email', 'password', 'nick', 'created_at', 'is_admin'];
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $beforeInsert = ['hashPassword'];
@@ -41,7 +41,7 @@ class User extends Model
         if (! isset($data['data']['password'])) {
             return $data;
         }
-
+        
         $data['data']['password']  = password_hash($data['data']['password'], PASSWORD_DEFAULT);
 
         return $data;

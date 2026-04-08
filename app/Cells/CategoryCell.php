@@ -15,7 +15,7 @@ class CategoryCell
         $html = [];
 
         foreach ($categories as $category) {
-            $html[] = "<a href='/category/{$category->name}/post' class='nav-link sb-menu-link'>{$category->name} <span class='badge round-pill bg-danger ms-auto'>{$category->count}</span></a>";
+            $html[] = "<a href='". url_to('category.post', $category->name) . "' class='nav-link sb-menu-link'>{$category->name} <span class='badge round-pill bg-danger ms-auto'>{$category->count}</span></a>";
         }
         return implode(' ', $html);
     }   
