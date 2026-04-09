@@ -40,3 +40,22 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function serializeObject(form) {
+  const obj = {};
+  const formData = new FormData(form);
+
+  for (const [key, value] of formData.entries()) {
+    // 같은 name이 여러 개일 경우 배열로 처리
+    if (obj[key]) {
+      if (Array.isArray(obj[key])) {
+        obj[key].push(value);
+      } else {
+        obj[key] = [obj[key], value];
+      }
+    } else {
+      obj[key] = value;
+    }
+  }
+
+  return obj;
+}

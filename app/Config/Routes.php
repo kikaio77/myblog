@@ -37,3 +37,7 @@ $routes->group('join', static function($routes) {
     $routes->get('/', 'Join');
     $routes->post('submit', 'Join::submit');
 });
+
+$routes->group('comment', static function($routes) {
+    $routes->post('new', 'Comment::new');
+});

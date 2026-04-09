@@ -30,9 +30,12 @@ class PostController extends BaseController
                 $postModel->update($id, ['views' => $data['post']->views + 1]);
             }
 
+            $commentModel = model('comment');
+
+            $data['comments'] = $commentModel->listByPost($id);
+
             $returnView = 'postDetail';
         } else {
-           log_message('error', $postModel->pager);
             $data['posts'] = $postModel->paginate(10, 'posts');
             $data['pager'] = $postModel->pager;
 
