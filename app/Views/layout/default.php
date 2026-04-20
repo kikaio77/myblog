@@ -10,6 +10,7 @@
 	<script src="/assets/js/common.js"></script>
 	<script src="/assets/js/bootstrap.bundle.min.js"></script>
 	<title> <?= $_ENV['app.title'] ?></title>
+	<?= csrf_meta() ?>
 	<?= $this->renderSection('head') ?>
 </head>
 <body>

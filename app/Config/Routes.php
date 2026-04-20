@@ -39,5 +39,9 @@ $routes->group('join', static function($routes) {
 });
 
 $routes->group('comment', static function($routes) {
+    $routes->get('list/(:num)', 'Comment::list/$1');
     $routes->post('new', 'Comment::new');
+    $routes->post('drop', 'Comment::drop');
+    $routes->post('modify', 'Comment::modify');
+
 });

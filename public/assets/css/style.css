@@ -67,6 +67,8 @@ footer{ background-color: #ccc;}
 .bg-nowwe:hover{ transform: translateY(-10px); transition: all 0.15s ease-in-out; box-shadow: 0 0 6px 0 #FFD06B;}
 
 #wrapLoginFm{ width: 100%; height: 100%;}
+#commentList{ display: flex; flex-direction: column; align-items: flex-end;}
+.commentItem{ display: flex; align-items: flex-start;}
 
 @media all and (min-width: 480px) {
     #topNav .navbar-brand{ width: 234px;}
