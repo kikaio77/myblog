@@ -16,7 +16,7 @@ class Comment extends Model
     public function listByPost($postId) {
         return $this->db->table('comments AS c')
                     ->join('users AS u', 'u.id = c.user_id')
-                    ->select('u.id AS uid, u.nick, c.parent_id, c.id AS cid, depth, c.text, c.created_at, c.deleted_at')
+                    ->select('u.id AS uid, u.nick, c.top_parent_id, c.parent_id, c.id AS cid, depth, c.text, c.created_at, c.deleted_at')
                     ->where('post_id', $postId)
                     ->orderBy(new RawSql('COALESCE(top_parent_id, c.id) ASC'))
                     ->orderBy('c.id','ASC')

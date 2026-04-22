@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\Router\RouteCollection;
 
 /**

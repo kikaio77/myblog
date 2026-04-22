@@ -8,9 +8,8 @@ window.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('sidenav-toggle', document.body.classList.contains('sidenav-toggled'));
         });
     }
-    console.log(localStorage.getItem('sidenav-toggle'));
     if (localStorage.getItem('sidenav-toggle')) {
-        console.log('이거타지?');
+   
          document.body.classList.add('sidenav-toggled');
     } else {
          document.body.classList.remove('sidenav-toggled');

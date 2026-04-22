@@ -43,53 +43,62 @@
 const list = document.getElementById('commentList');
 
 document.addEventListener('DOMContentLoaded', e => {
+
     const commentsData = loadCommentData(<?= $post->id ?>);
     
     commentsData
         .then(
           rows => {
-            printComments(list, rows);  
+
+            list.append(printComments(rows));
           }
-        )
+        );
 });
-document.getElementById('newCommentForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const _this = e.target;
+const isLogin = document.getElementById('newCommentForm');
 
-    const option = {
-        'method': 'POST',
-        'headers': {
-            'Content-Type': 'Application/json',
-            'x-requested-with': 'XMLHttpRequest'
-        },
-        'body': JSON.stringify(serializeObject(_this))
-    };
+if (isLogin) {
 
-    fetch('/comment/new', option)
-    .then( (res) => res.json())
-    .then(d => {
-        if (d.error) {
-            alert(d.message);
-            return false;
-        }
-        
-        const rows = d.comments;
-        
-        list.innerHTML = ''; 
-        printComments(list, rows);
+    document.getElementById('newCommentForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const _this = e.target;
 
-    })
-});
+        const option = {
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'Application/json',
+                'x-requested-with': 'XMLHttpRequest'
+            },
+            'body': JSON.stringify(serializeObject(_this))
+        };
+
+        fetch('/comment/new', option)
+        .then( (res) => res.json())
+        .then(d => {
+            if (d.error) {
+                alert(d.message);
+                return false;
+            }
+            
+    
+            list.innerHTML = '';
+            list.append(printComments(d));
+        })
+    });
+}
+
 function loadCommentData(postId) {
     return new Promise(function(resolve, reject) {
         fetch(`/comment/list/${postId}`, { method: 'GET', headers: { 'Content-Type': 'appplication/json', 'x-requested-with': 'XMLHttpRequest'}})
         .then( res => res.json())
-        .then( d => resolve(d.comments))
+        .then( d => resolve(d))
         .catch( e => console.log(e.error));                       
     });
 }
-function printComments(listDom,rows) {
-     rows.forEach( row => {
+function printComments(data) {
+    
+
+    const fragment = document.createDocumentFragment();
+     data.comments.forEach( row => {
             const div = document.createElement('div');
             div.classList.add('commentItem');
             console.log(div);
@@ -119,100 +128,190 @@ function printComments(listDom,rows) {
             rightPart.classList.add('col-4', 'd-flex', 'justify-content-end', 'gap-1');
             
 
-            if (<?= session()->has('user') ?>) {
+            if (row.isWriter) {
 
-                if (row.isWriter) {
+                if (! row.deleted_at) {
 
-                    if (! row.deleted_at) {
+                    const submitBtn = document.createElement('button');
+                    submitBtn.classList.add('btn', 'btn-sm', 'btn-primary');
+                    submitBtn.innerText = '제출';
+                    submitBtn.dataset.idx = row.cid;
+                    submitBtn.style.display = 'none';
 
-                        const submitBtn = document.createElement('button');
-                        submitBtn.classList.add('btn', 'btn-sm', 'btn-primary');
-                        submitBtn.innerText = '제출';
-                        submitBtn.dataset.idx = row.cid;
+                    submitBtn.addEventListener('click', e => {
+                        fetch('/comment/modify', {'method': 'POST', 'headers': { 'Content-Type': 'application/json', 'x-requested-with': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]').content}, 'body': JSON.stringify({'idx': e.target.dataset.idx, 'text':  itemBody.querySelector('textarea').value})})
+                            .then(res => res.json())
+                            .then(d => {
+                                if (d.error) {
+                                    alert(d.message);
+                                    return false;
+                                }
+                                itemBody.querySelector('.py-2').innerText = d.text;
+                                itemBody.querySelector('.py-2').style.display = 'block';
+                                itemBody.querySelector('textarea').innerText = d.text;
+                                itemBody.querySelector('textarea').style.display = 'none';
+
+                                e.target.style.display =  'none';
+                                cancelBtn.style.display =  'none';
+                                modifyBtn.style.display =  'block';
+                                delBtn.style.display =  'block';
+                            });
+                    });
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.classList.add('btn', 'btn-sm', 'btn-secondary');
+                    cancelBtn.innerText = '취소';
+                    cancelBtn.style.display = 'none';
+
+                    cancelBtn.addEventListener('click', e => {
+                        modifyBtn.style.display = 'block';
+                        delBtn.style.display = 'block';
                         submitBtn.style.display = 'none';
-
-                        submitBtn.addEventListener('click', e => {
-                            fetch('/comment/modify', {'method': 'POST', 'headers': { 'Content-Type': 'application/json', 'x-requested-with': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]').content}, 'body': JSON.stringify({'idx': e.target.dataset.idx, 'text':  itemBody.querySelector('textarea').value})})
-                                .then(res => res.json())
-                                .then(d => {
-                                    if (d.error) {
-                                        alert(d.message);
-                                        return false;
-                                    }
-                                    itemBody.querySelector('.py-2').innerText = d.text;
-                                    itemBody.querySelector('.py-2').style.display = 'block';
-                                    itemBody.querySelector('textarea').innerText = d.text;
-                                    itemBody.querySelector('textarea').style.display = 'none';
-
-                                    e.target.style.display =  'none';
-                                    cancelBtn.style.display =  'none';
-                                    modifyBtn.style.display =  'block';
-                                    delBtn.style.display =  'block';
-                                });
-                        });
-                        const cancelBtn = document.createElement('button');
-                        cancelBtn.classList.add('btn', 'btn-sm', 'btn-secondary');
-                        cancelBtn.innerText = '취소';
                         cancelBtn.style.display = 'none';
+                        
+                        itemBody.querySelector('.py-2').style.display = 'block';
+                        itemBody.querySelector('textarea').style.display = 'none';
+                    });
+                    const modifyBtn = document.createElement('button');
+                    modifyBtn.classList.add('btn', 'btn-sm', 'btn-warning');
+                    modifyBtn.innerText = '수정';
+                    modifyBtn.dataset.idx = row.cid;
+                    modifyBtn.addEventListener('click', e => {
+                        
+                        itemBody.querySelector('.py-2').style.display = 'none';
+                        itemBody.querySelector('textarea').style.display = 'block';
+                        modifyBtn.style.display = 'none';
+                        delBtn.style.display = 'none';
+                        submitBtn.style.display = 'block';
+                        cancelBtn.style.display = 'block';
+                    });
+                    rightPart.append(modifyBtn);
+                    const delBtn = document.createElement('button');
+                    delBtn.classList.add('btn', 'btn-sm', 'btn-danger');
+                    delBtn.innerHTML = '삭제';
+                    delBtn.dataset.idx = row.cid;
+                    delBtn.addEventListener('click', e => {
+                        fetch('/comment/drop',
+                        {
+                            'method': 'POST',
+                            'headers': {
+                                'Content-Type': 'Application/json',
+                                'x-requested-with': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]').content
+                            },
+                            'body': JSON.stringify({idx: row.cid})
+                        })
+                        .then(res => res.json())    
+                        .then(d => {
+                            alert(d.message);
+                        
 
-                        cancelBtn.addEventListener('click', e => {
-                            modifyBtn.style.display = 'block';
-                            delBtn.style.display = 'block';
-                            submitBtn.style.display = 'none';
-                            cancelBtn.style.display = 'none';
-                           
-                            itemBody.querySelector('.py-2').style.display = 'block';
-                            itemBody.querySelector('textarea').style.display = 'none';
+                        itemBody.querySelector('strong').innerText = '';
+                        itemBody.querySelector('.py-2').innerText = '삭제된 덧글입니다.';
                         });
-                        const modifyBtn = document.createElement('button');
-                        modifyBtn.classList.add('btn', 'btn-sm', 'btn-warning');
-                        modifyBtn.innerText = '수정';
-                        modifyBtn.dataset.idx = row.cid;
-                        modifyBtn.addEventListener('click', e => {
-                           
-                            itemBody.querySelector('.py-2').style.display = 'none';
-                            itemBody.querySelector('textarea').style.display = 'block';
-                            modifyBtn.style.display = 'none';
-                            delBtn.style.display = 'none';
-                            submitBtn.style.display = 'block';
-                            cancelBtn.style.display = 'block';
+                    });
+                    rightPart.append(delBtn, submitBtn, cancelBtn);
+                }
+                
+            } else {
+
+                if (data.isLogin && ! row.deleted_at) {
+                    const replyBtn = document.createElement('button');
+                    replyBtn.classList.add('btn', 'btn-sm', 'btn-secondary');
+                    replyBtn.innerText = '답글';
+
+
+                    replyBtn.addEventListener('click', e => {
+                        const replyForm = document.createElement('form');
+                        const replyLeft = document.createElement('div');
+                     
+                        const replyRight = document.createElement('div');
+                        const replyBtns = document.createElement('div');
+                        const replyBtnConfirm = document.createElement('button');
+                        const replyBtnCancel = document.createElement('button');
+
+                        replyBtnConfirm.innerText = '제출';
+                        replyBtnCancel.innerText = '취소';
+                        replyBtnCancel.classList.add('btn', 'btn-sm', 'btn-secondary');
+                        replyBtnConfirm.classList.add('btn', 'btn-sm', 'btn-primary');
+                        replyBtnConfirm.setAttribute('type', 'submit');
+                        replyBtnCancel.setAttribute('type', 'button');
+                        const inputhidden1 = document.createElement('input');
+                        const inputhidden2 = document.createElement('input');
+                        const inputhidden3 = document.createElement('input');
+                        const inputhidden4 = document.createElement('input');
+
+                        inputhidden1.setAttribute('type', 'hidden');
+                        inputhidden1.setAttribute('name', 'top_parent_id');
+                        inputhidden2.setAttribute('type', 'hidden');
+                        inputhidden2.setAttribute('name', 'parent_id');
+                        inputhidden3.setAttribute('type', 'hidden');
+                        inputhidden3.setAttribute('name', 'depth');
+                        inputhidden4.setAttribute('type', 'hidden');
+                        inputhidden4.setAttribute('name', 'post_id');
+                        inputhidden4.setAttribute('value', <?= $post->id ?>);
+                        if (row.depth == 0) {
+                            inputhidden1.setAttribute('value', row.cid);
+                            inputhidden2.setAttribute('value', row.cid);
+                            inputhidden3.setAttribute('value', row.depth);
+                        } else {
+                            inputhidden1.setAttribute('value', row.top_parent_id);
+                            inputhidden2.setAttribute('value', row.cid);
+                            inputhidden3.setAttribute('value', row.depth);
+                        }
+                       
+
+                        replyForm.setAttribute('method', 'POST');
+                        replyForm.setAttribute('action', '/comment/new');
+                        replyForm.append(inputhidden1, inputhidden2, inputhidden3, inputhidden4);
+
+                        replyBtnCancel.addEventListener('click', e => {
+                            replyForm.remove();
                         });
-                        rightPart.append(modifyBtn);
-                        const delBtn = document.createElement('button');
-                        delBtn.classList.add('btn', 'btn-sm', 'btn-danger');
-                        delBtn.innerHTML = '삭제';
-                        delBtn.dataset.idx = row.cid;
-                        delBtn.addEventListener('click', e => {
-                            fetch('/comment/drop',
+
+                        replyForm.addEventListener('submit', e => {
+                            e.preventDefault();
+                            const body = serializeObject(e.target);
+                           
+                            fetch(e.target.getAttribute('action'),
                             {
-                                'method': 'POST',
+                                'method': e.target.getAttribute('method'),
                                 'headers': {
                                     'Content-Type': 'Application/json',
                                     'x-requested-with': 'XMLHttpRequest',
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]').content
                                 },
-                                'body': JSON.stringify({idx: row.cid})
+                                'body': JSON.stringify(body)
                             })
                             .then(res => res.json())    
                             .then(d => {
-                                alert(d.message);
-                          
-
-                            itemBody.querySelector('strong').innerText = '';
-                            itemBody.querySelector('.py-2').innerText = '삭제된 덧글입니다.';
+                                 list.innerHTML = '';
+                                 list.append(printComments(d));
+                                
                             });
+
                         });
-                        rightPart.append(delBtn, submitBtn, cancelBtn);
-                    }
-                    
-                } else {
-                    const replyBtn = document.createElement('button');
-                    replyBtn.classList.add('btn', 'btn-sm', 'btn-secondary');
-                    replyBtn.innerText = '답글';
+                        replyBtns.classList.add('mt-1','d-flex', 'gap-1', 'justify-content-end');
+                        replyBtns.append(replyBtnConfirm, replyBtnCancel);
+
+                       // replyLeft.classList.add('p-1');
+                        // replyLeft.innerText = 'ㄴ';
+                        replyRight.classList.add('w-100');
+                        replyForm.classList.add('d-flex', 'card', 'align-items-start', 'p-3', 'w-50');
+                        const textarea = document.createElement('textarea');
+                        textarea.classList.add('form-control');
+                        textarea.setAttribute('name', 'text');
+                        textarea.innerText = '내용을 입력하세요.';
+                        replyRight.append(textarea, replyBtns);
+                        replyForm.append(replyLeft, replyRight);
+                        div.after(replyForm);
+                    });
 
                     rightPart.append(replyBtn);
+
                 }
+               
             }
+            
             bodyInner.append(leftPart, rightPart);
 
             const content = document.createElement('div');
@@ -227,8 +326,9 @@ function printComments(listDom,rows) {
             itemCont.append(itemBody);
             div.style.width = `calc(100% - (${row.depth}*20px))`;
             div.append(itemCont);
-            listDom.append(div);
+            fragment.append(div);
     });
+    return fragment;
 }
 </script>
 <?= $this->endSection() ?>
