@@ -29,6 +29,15 @@
 
     </article>
     <div class="text-center mt-3 d-flex justify-content-center">
-            <?= $pager->links() ?>
+        <?= $pager->links() ?>
     </div>
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<script>
+    document.addEventListener('DOMContentLoaded', e => {
+        showModal(modal);
+    });
+</script>
+
 <?= $this->endSection() ?>

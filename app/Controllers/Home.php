@@ -23,7 +23,6 @@ class Home extends BaseController
             $no++;
         }
         
-        $this->logger->debug('하이');
         $data['posts'] = $posts;
         $data['postCnt'] = $postsCnt;
         $data['pager'] = $postModel->pager;

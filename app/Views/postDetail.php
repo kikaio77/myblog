@@ -1,11 +1,24 @@
 <?= $this->extend('layout/default') ?>
-
+<?= $this->section('head') ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+    /* Quill 기본 스타일 덮어쓰기 */
+    pre.ql-syntax {
+        background-color: #f3f3f3 !important; /* 라이트 테마 */
+        color: inherit !important;
+        border-radius: 6px;
+        padding: 1em;
+        overflow-x: auto;
+    }
+</style>
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <h4 class="content-title"><?= $post->title ?></h4>
 <div class="row align-items-center justify-content-between mb-1">
     <div class="col-2">
-      <?php if (session()->has('user') && session()->get('user')->is_admin === 1 ): ?>
+      <?php if (session()->has('user') && session()->get('user')->is_admin == 1 ): ?>
       <a href="/posts/<?= $post->id ?>/form" class="btn btn-warning me-auto" role="button">수정</a>
       <?php endif; ?>
     </div>
@@ -40,6 +53,11 @@
 </div>
 
 <script>
+  
+document.querySelectorAll('pre code').forEach(block => {
+    hljs.highlightElement(block);
+});
+
 const list = document.getElementById('commentList');
 
 document.addEventListener('DOMContentLoaded', e => {
@@ -75,7 +93,7 @@ if (isLogin) {
         .then( (res) => res.json())
         .then(d => {
             if (d.error) {
-                alert(d.message);
+               showModal(modal, {html: d.message});
                 return false;
             }
             
@@ -143,7 +161,7 @@ function printComments(data) {
                             .then(res => res.json())
                             .then(d => {
                                 if (d.error) {
-                                    alert(d.message);
+                                   showModal(modal, {html: d.message});
                                     return false;
                                 }
                                 itemBody.querySelector('.py-2').innerText = d.text;
@@ -202,7 +220,7 @@ function printComments(data) {
                         })
                         .then(res => res.json())    
                         .then(d => {
-                            alert(d.message);
+                           showModal(modal, {buttons: { confirm: { used : false }},html: d.message});
                         
 
                         itemBody.querySelector('strong').innerText = '';

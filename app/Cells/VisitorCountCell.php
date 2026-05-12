@@ -8,7 +8,6 @@ class VisitorCountCell
 {
     public function view(): string
     {
-        $redis = service('redis');
         $redis = \Config\Services::redis(true);
 
         $now = new DateTime();

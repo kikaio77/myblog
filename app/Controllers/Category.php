@@ -8,6 +8,8 @@ class Category extends BaseController
 {
     public function list($categoryName = null) 
     {
+        log_message('error', $categoryName);
+        
         $db = db_connect();
 
         $builder = $db->table('posts');

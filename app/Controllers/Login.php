@@ -16,7 +16,12 @@ class Login extends BaseController
             return redirect('/main');
         }
 
-        return view('login');
+        $result = [];
+        $state = bin2hex(random_bytes(16));
+        $naverCallbackUrl = urlencode(config('App')->baseURL . 'oauth/social/naver');
+        $result['socialLoginURLs']['naver'] = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={$_ENV['naver.client.id']}&redirect_uri={$naverCallbackUrl}&state={$state}";
+       
+        return view('login', $result);
     }
 
     public function in()
@@ -29,30 +34,30 @@ class Login extends BaseController
 
         $userModel = model('user');
 
-$rules = [
-    'email' => 'required|valid_email',
-    'password' => 'required|min_length[8]|max_length[16]',
-];
+        $rules = [
+            'email' => 'required|valid_email',
+            'password' => 'required|min_length[8]|max_length[16]',
+        ];
 
-$messages = [
-    'email' => [
-        'required' => '이메일은 반드시 필수 값입니다.',
-        'valid_email' => '형식이 올바르지 않습니다.'
-    ],
-    'password' => [
-        'required' => '비밀번호를 입력해주세요.',
-        'min_length' => '최소 8자이상 입니다.',
-        'max_length' => '최대 16자 입니다.'
-    ],
-];
+        $messages = [
+            'email' => [
+                'required' => '이메일은 반드시 필수 값입니다.',
+                'valid_email' => '형식이 올바르지 않습니다.'
+            ],
+            'password' => [
+                'required' => '비밀번호를 입력해주세요.',
+                'min_length' => '최소 8자이상 입니다.',
+                'max_length' => '최대 16자 입니다.'
+            ],
+        ];
 
-if (!$this->validateData($inputs, $rules, $messages)) {
-    $firstErrKey =  array_key_first($this->validator->getErrors());
-    return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey]);
-}
-$validInputs = $this->validator->getValidated();
+        if (!$this->validateData($inputs, $rules, $messages)) {
+            $firstErrKey =  array_key_first($this->validator->getErrors());
+            return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey]);
+        }
+        $validInputs = $this->validator->getValidated();
 
-$user = $userModel->where('email', $validInputs['email'])->first();
+        $user = $userModel->where('email', $validInputs['email'])->first();
 
         if (! $user) {
             return redirect()->back()->with('error', '아이디 혹은 비밀번호가 일치하지 않습니다.');

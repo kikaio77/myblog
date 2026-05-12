@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xpressengine/XEIcon@2.3.3/xeicon.min.css">
 	<link rel="stylesheet" href="/assets/css/style.css">
-	<script src="/assets/js/common.js"></script>
 	<script src="/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="/assets/js/common.js"></script>
 	<title> <?= $_ENV['app.title'] ?></title>
 	<?= csrf_meta() ?>
 	<?= $this->renderSection('head') ?>
@@ -24,6 +24,7 @@
 				<div class="container p-3 p-md-4 p-lg-5">
 				<?= $this->renderSection('content') ?>
 				</div>
+				<?= $this->include('layout/modal') ?>
 			</main>
 			<?= $this->include('layout/footer') ?>
 		</div>

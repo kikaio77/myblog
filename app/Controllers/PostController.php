@@ -114,7 +114,8 @@ class PostController extends BaseController
         ];
 
         if (! $this->validate($rules, $messages)) {
-            echo print_r($this->validator->getErrors(), true);
+            $firstErrKey = array_key_first($this->validator->getErrors());
+            return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey])->withInput();
             exit;
         }
         $purifier = new HTMLPurifier();

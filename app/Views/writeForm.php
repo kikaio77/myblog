@@ -1,8 +1,15 @@
 <?= $this->extend('layout/default') ?>
 
 <?= $this->section('head') ?>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+<!-- highlight.js 브라우저용 전체 빌드 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/default.min.css">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- Quill CSS & JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <?= csrf_meta() ?>
 <?= $this->endSection() ?>
 
@@ -23,10 +30,10 @@
             </select>
         </div>
         <div class="col mb-2">
-          <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= $post->title ?>">
+          <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= old('title') ?>">
         </div>
         <div id="editor" class="border-nowwe bg-white" style="min-height: 430px;">
-            <?= $post->content ?>
+            <?= old('content') ?>
         </div>
         <div class="formButtons bg-gradient" style="border: 1px solid #599080; background-color: #599080;">
             <div class="py-1 d-flex gap-1 justify-content-center">
@@ -44,10 +51,19 @@
 const editor = new Quill('#editor', { 
     theme: 'snow',
     modules: {
+        syntax: {
+        highlight: text => hljs.highlightAuto(text).value
+         },
         toolbar: {
             container: [
-                ['bold', 'italic', 'underline'],
-                ['image']
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'video'],
+                [{ 'align': [] }],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
             ],
             handlers: {
                 image: function() {
@@ -78,7 +94,9 @@ const editor = new Quill('#editor', {
         }
     }
 });
-
+<?php if (session()->has('error')): ?>
+    showModal(modal, { 'buttons': { confirm: {used: false}, cancel: { used: true }}, html: `<?= session()->get('error') ?>`});
+<?php endif; ?>
 document.getElementById('postForm').addEventListener('submit', (e) => {
     const _this = e.target;
     e.preventDefault();

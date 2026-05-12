@@ -10,7 +10,9 @@
 			<?= $_ENV['app.shortIntroduce'] ?>
 		</div>
 	</li>
+	<?php if (session()->has('user') && session()->get('user')->is_admin == 1): ?>
 	<li><a href="/posts/form" class="fs-6"><i class="me-2 xi-pen"></i>글쓰기</a></li>
+	<?php endif; ?>
 </ul>
 <div class="sb-menu">
 	<ul class="nav nav-pills sb-menu-item">

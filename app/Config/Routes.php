@@ -1,5 +1,6 @@
 <?php
 
+use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\RawSql;
 use CodeIgniter\Router\RouteCollection;
 
@@ -8,6 +9,15 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->addRedirect('/', 'main');
 
+$routes->get('test', static function(){
+    $db = \Config\Database::connect();
+
+$builder = $db->table('posts');
+$subQry = $db->table('posts')->selectMax('id', 'recently_post_id');
+$builder->where('id = ', $subQry);
+
+echo $builder->getCompiledSelect();
+});
 $routes->group('posts', static function($routes) {
     $routes->get('(:num)?', 'PostController::list/$1', ['as' => 'posts.list']);
     $routes->get('form', 'PostController::form');
@@ -44,5 +54,8 @@ $routes->group('comment', static function($routes) {
     $routes->post('new', 'Comment::new');
     $routes->post('drop', 'Comment::drop');
     $routes->post('modify', 'Comment::modify');
+});
 
+$routes->group('oauth', static function($routes) {
+    $routes->get('social/(:alpha)', 'OAuth::social/$1');
 });

@@ -52,22 +52,19 @@
 
 <?php if (session()->has('error')): ?>
 <script>
-    alert(`<?= session()->get('error') ?>`);
+    showModal(modal, {html: `<?= session()->get('error') ?>`});
 </script>
 <?php endif; ?>
 
 <script>
 
-function validateForm() {
-
-}
 document.getElementById('joinFm').addEventListener('submit', (e) => {
     const _this = e.target;
 
-    // if (_this.checkValidity()) {
-    //     _this.classList.add('was-validated');
-    //     e.preventDefault();
-    // }
+    if (_this.checkValidity()) {
+        _this.classList.add('was-validated');
+        e.preventDefault();
+    }
     _this.submit();
 });
 </script>

@@ -38,16 +38,20 @@
                         <label for="agree_store_id" class="form-check-label me-1">아이디 저장</label>
                     </div> 
                     <hr>
-                    <div class="d-grid">
-                        <button class="button btn btn-success">네이버 로그인</button>
+                    <?php foreach ($socialLoginURLs as $service => $url): ?>
+                    <div class="d-grid mb-3">
+                        <a href="<?= $url ?>"class="button btn btn-success"><?= strtoupper($service) ?> 로그인</a>
                     </div>
+                    <?php endforeach; ?>
                 </div> 
             </form>
         </div>
     </div>
+<?= $this->include('layout/modal') ?>
+
 <?php if (session()->has('error')): ?>
 <script>
-alert(`<?= session()->get('error') ?>`);
+    showModal(modal, { 'buttons': { confirm: {used: false}, cancel: { used: true }}, html: `<?= session()->get('error') ?>`});
 </script>
 <?php endif; ?>
 <script>
