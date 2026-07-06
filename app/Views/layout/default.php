@@ -21,7 +21,7 @@
 		</div>
 		<div class="layoutContent">
 			<main>
-				<div class="container p-3 p-md-4 p-lg-5">
+				<div class="container-fluid p-3 p-md-4 p-lg-5">
 				<?= $this->renderSection('content') ?>
 				</div>
 				<?= $this->include('layout/modal') ?>

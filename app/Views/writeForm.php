@@ -20,7 +20,7 @@
         <?= csrf_field() ?>
         <input type="hidden" name="_method" value="<?= $form['method'] ?>">
         <input type="hidden" name="id" value="<?= $post->id ?>" id="id">
-        <input type="hidden" name="content" id="content" value="">
+        <input type="hidden" name="content" id="content" value="<?= $post->content ?>">
         <div class="ms-auto col-6 mb-2 col-sm-3">
             <select name="category_id" id="category_id" class="form-select">
                 <option value="">카테고리 선택</option>
@@ -30,10 +30,10 @@
             </select>
         </div>
         <div class="col mb-2">
-          <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= old('title') ?>">
+          <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= $post->title ?>">
         </div>
         <div id="editor" class="border-nowwe bg-white" style="min-height: 430px;">
-            <?= old('content') ?>
+            <?= $post->content ?>
         </div>
         <div class="formButtons bg-gradient" style="border: 1px solid #599080; background-color: #599080;">
             <div class="py-1 d-flex gap-1 justify-content-center">

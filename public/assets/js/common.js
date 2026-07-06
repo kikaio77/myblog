@@ -63,71 +63,65 @@ for (const [key, value] of formData.entries()) {
 return obj;
 }
 
-function showModal(bsModalEl, config = {}, callback = {}) {
-	
-	return new Promise((resolve, reject) => {
-		if (! bsModalEl) {
-			return reject('No Modal Element');
-		}
+function showModal(modalId, config = {}) {
+	const modalEl = document.getElementById(modalId);
+	if (! modalEl) {
+		return;
+	}
 
-		if (Object.keys(config).length === 0) {
-			config = {
-			'buttons': {
-				'confirm': {
-					'used': true,
-					'text': '확인',
-					'class': ['btn', 'btn-sm', 'btn-primary']
-				},
-				'cancel': {
-					'used': true,
-					'text': '닫기',
-					'class': ['btn', 'btn-sm', 'btn-secondary']
-				},
+	if (Object.keys(config).length === 0) {
+		config = {
+			'title': `안내`,
+			'body': `<p>정말 그렇게 하시겠습니까?</p>`,
+			'btns': {
+				'confirm': { 'is_used': true, 'class': ['btn', 'btn-sm', 'btn-primary'], 'text': '확인', 'type': 'submit'},
+				'cancel': {'is_used': true, 'class': ['btn', 'btn-sm', 'btn-secondary'], 'text': '닫기', 'type': 'button'}
 			},
-			'html': `정말 그렇게 하시겠습니까?`
-			};
 		};
-		const confirmConf = config.buttons.confirm ?? null;
-		const cancelConf = config.buttons.cancel ?? null;
+	}
 
-		if (confirmConf) {
-			const confirmBtn = bsModalEl.querySelectorAll('.modal-footer > button')[0];
-			confirmBtn.style.display = confirmConf.used  ? 'block' : 'none';
-			if (confirmConf.class) {
-				confirmBtn.classList.add(...confirmConf.class);
-			}
-			confirmBtn.onclick = e => {
-				resolve({ action: 'confirm', event: e});
-				bsModalObj.hide();
-			};
-		}
+	if (config.title) {
+		modalEl.querySelector('.modal-header h5').innerText = config.title;
+	}
 
-		if (cancelConf) {
-			const cancelBtn = bsModalEl.querySelectorAll('.modal-footer > button')[1];
-			cancelBtn.style.display = cancelConf.used  ? 'block' : 'none';
-			if (cancelConf.class) {
-				cancelBtn.classList.add(...cancelConf.class);
-			}
-			cancelBtn.onclick = e => {
-				resolve({ action: 'cancel', event: e});
-				bsModalObj.hide();
-			};
-		}
-			
-		if (config.html) {
-			bsModalEl.querySelector('.modal-body > form').innerHTML = config.html;
-		}
-		const bsModalObj = new bootstrap.Modal(bsModalEl);
+	if (config.body) {
+		modalEl.querySelector('.modal-body').innerHTML = config.body;
+	}
 
-		bsModalObj.show();
-	});
+	const form = modalEl.querySelector('form');
+
+	if (config.form) {
+		form.action = config['form']['action'] || '';
+		form.method = config['form']['method'] || 'POST';
+	}
+
+	const confirmBtn = modalEl.querySelector('.modal-footer .btn-primary');
+	const cancelBtn = modalEl.querySelector('.modal-footer .btn-secondary');
+
+	if (config.btns.confirm) {
+		confirmBtn.style.display = config.btns.confirm.used ? 'block' : 'none';
+		confirmBtn.innerText = config.btns.confirm.text || '';
+		// confirmBtn.type = config.btns.confirm.type || 'button';
+		confirmBtn.className = config.btns.confirm.class.join(' ');
+
+	}
+		
+	if (config.btns.cancel) {
+		cancelBtn.style.display = config.btns.cancel.used ? 'block' : 'none';
+		cancelBtn.innerText = config.btns.cancel.text || '';
+		cancelBtn.type = config.btns.cancel.type || 'button';
+		cancelBtn.className = config.btns.cancel.class.join(' ');
+
+	}
+	const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+	modal.show();
+
 }
 
-function closeModal(bsModal, callback) {
-	bsModal.hide();
-	
-	return new Promise(function(resolve, reject){
-		resolve(callback);
-	});
+function closeModal(modalId) {
+	const modalEl = document.getElementById(modalId);
+	const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+	modal.hide();
 }
 

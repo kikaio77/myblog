@@ -9,15 +9,6 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->addRedirect('/', 'main');
 
-$routes->get('test', static function(){
-    $db = \Config\Database::connect();
-
-$builder = $db->table('posts');
-$subQry = $db->table('posts')->selectMax('id', 'recently_post_id');
-$builder->where('id = ', $subQry);
-
-echo $builder->getCompiledSelect();
-});
 $routes->group('posts', static function($routes) {
     $routes->get('(:num)?', 'PostController::list/$1', ['as' => 'posts.list']);
     $routes->get('form', 'PostController::form');
@@ -58,4 +49,13 @@ $routes->group('comment', static function($routes) {
 
 $routes->group('oauth', static function($routes) {
     $routes->get('social/(:alpha)', 'OAuth::social/$1');
+});
+
+
+$routes->group('mypage', static function($routes){
+    $routes->post('putnick', 'MyPage::putNick');
+});
+
+$routes->get('test', static function(){
+    return view('test');
 });

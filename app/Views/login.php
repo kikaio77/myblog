@@ -16,7 +16,7 @@
         <div class="col-9 col-sm-6 col-md-3">
             <form class="loginFm card" action="/login/in" id="loginFm" method="POST">
                 <?= csrf_field() ?>
-                <div class="card-header fs-5 fw-semibold"><?= $_ENV['app.name'] ?>&nbsp;&nbsp;로그인</div>
+                <div class="card-header fs-5 fw-semibold">로그인</div>
                 <div class="card-body">
                     <div class="form-floating mb-3">
                         <input type="text" name="email" id="email" class="form-control form-control-sm" placeholder="Enter your email!!"required="required">

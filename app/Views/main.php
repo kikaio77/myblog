@@ -36,7 +36,7 @@
 <?= $this->section('js') ?>
 <script>
     document.addEventListener('DOMContentLoaded', e => {
-        showModal(modal);
+       
     });
 </script>
 

@@ -11,7 +11,7 @@ body{ height: 100%; font-family: 'Wanted Sans Variable', sans-serif; background-
 #topNav i:hover{ color:#ccc; transition: color 0.3s linear;}
 #topNav .navbar-brand h6{ color: #ffffff;}
 .layoutWrap{ display: flex; min-height:   100%;}
-.layoutSideNav{  overflow-y: auto; scrollbar-width: thin; z-index: 999; position: fixed; top: 50px; left: 0; right: 0; width: 250px; background-color: #ffffff; transform: translateX(-250px); transition: transform 0.3s ease-in-out; height: calc(100vh - 50px); border-left: 1px solid #eee; }
+.layoutSideNav{ scrollbar-width: thin; z-index: 999; position: fixed; top: 50px; left: 0; right: 0; width: 250px; background-color: #ffffff; transform: translateX(-250px); transition: transform 0.3s ease-in-out; height: calc(100vh - 50px); border-left: 1px solid #eee; }
 .layoutSideNav_nav{  width: 100%;}
 
 .layoutContent {
@@ -19,8 +19,7 @@ body{ height: 100%; font-family: 'Wanted Sans Variable', sans-serif; background-
     position: relative;
     flex-direction: column;
     justify-content: space-between;
-    padding-left: 250px;
-    margin-left: -250px;
+    margin-left: 0px;
     width: 100%;
     min-height: calc(100vh - 50px);
     flex-grow: 1;
@@ -46,7 +45,7 @@ body{ height: 100%; font-family: 'Wanted Sans Variable', sans-serif; background-
 .profile > li{font-size: 0.9rem;}
 .profileIntro{ font-size: 0.9rem; color: #333;}
 .profileIntro > div{ color: inherit; font-weight: 400;}
-body.sidenav-toggled .layoutSideNav{ transform: translateX(0); overflow-y: auto; z-index: 1020;}
+body.sidenav-toggled .layoutSideNav{ transform: translateX(0); z-index: 1020;}
 
 body.sidenav-toggled .layoutContent::before{ display: block;}
 .content-title{ margin-bottom: 30px !important;}
