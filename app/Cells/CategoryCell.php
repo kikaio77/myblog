@@ -8,7 +8,7 @@ class CategoryCell
 {
     public static function subNavCategory(): string
     {
-        $postModel = model('post');
+        $postModel = model('Post');
 
         $categories = $postModel->getPostCountByCategory();
 

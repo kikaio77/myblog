@@ -51,10 +51,31 @@
 
 <?php if (session()->has('error')): ?>
 <script>
-    showModal(modal, { 'buttons': { confirm: {used: false}, cancel: { used: true }}, html: `<?= session()->get('error') ?>`});
+    showModal('modal', { title: '로그인 실패',
+							btns: { 
+								confirm: {
+									is_used: false,
+									class: ['btn', 'btn-sm', 'btn-primary']								
+								}, 
+								cancel: { 
+									is_used: true,
+									class: ['btn', 'btn-sm', 'btn-secondary'],
+									text: '확인'
+								}
+							},
+							body: `<p><?= session()->get('error') ?></p>`
+						});
 </script>
 <?php endif; ?>
 <script>
+
+const locStoreId = window.localStorage.getItem('agree_store_id');
+
+if (locStoreId !== null) {
+	document.getElementById('agree_store_id').checked = true;
+	document.getElementById('email').value = locStoreId;
+}
+
 document.getElementById('loginFm').addEventListener('submit', (e) => {
     // e.preventDefault();
     const _this = e.target;
@@ -63,9 +84,22 @@ document.getElementById('loginFm').addEventListener('submit', (e) => {
          _this.classList.add('was-validated');
         e.preventDefault();
     }
-
+	
+	if (document.getElementById('agree_store_id').checked) {
+	  window.localStorage.setItem('agree_store_id', document.getElementById('email').value);
+	}
     _this.submit();
     
+});
+
+document.getElementById('agree_store_id').addEventListener('change', e => {
+	if (e.target.checked) {
+		window.localStorage.setItem('agree_store_id', document.getElementById('email').value);
+		return;
+	}
+	console.log(window.localStorage.getItem('agree_store_id'));
+
+	window.localStorage.removeItem('agree_store_id');
 });
 </script>
 </body>

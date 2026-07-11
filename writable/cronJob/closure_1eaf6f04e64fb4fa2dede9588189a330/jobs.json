@@ -1,0 +1,38 @@
+[
+    {
+        "name": "closure_1eaf6f04e64fb4fa2dede9588189a330",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-11 02:08:01",
+        "end_at": "2026-07-11 02:08:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    },
+    {
+        "name": "closure_1eaf6f04e64fb4fa2dede9588189a330",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-11 02:07:01",
+        "end_at": "2026-07-11 02:07:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    },
+    {
+        "name": "closure_1eaf6f04e64fb4fa2dede9588189a330",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-11 02:06:01",
+        "end_at": "2026-07-11 02:06:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    }
+]

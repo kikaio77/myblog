@@ -9,7 +9,7 @@ class Comment extends BaseController
         $session = session();
         $user = $session->get('user');
         
-        $commentModel = model('comment');
+        $commentModel = model('Comment');
 
         $commentsByPost = $commentModel->listByPost($postId);
 
@@ -33,7 +33,7 @@ class Comment extends BaseController
         $session = session();
         $inputs = $this->request->getJSON();
 
-        $commentModel = model('comment');
+        $commentModel = model('Comment');
 
         $result = ['error' => false, 'message' => '성공'];
 
@@ -44,7 +44,6 @@ class Comment extends BaseController
         $data['post_id'] = $inputs->post_id;
         $data['text'] = $inputs->text;
       
-        $this->logger->emergency(print_r($data, true));
         if (! $commentModel->save($data)) {
             $result['error'] = true;
             $result['message'] = '실패';
@@ -55,7 +54,13 @@ class Comment extends BaseController
 
         foreach ($comments as &$comment) {
             $comment->isWriter = $comment->uid === $data['user_id'] ? true : false;
-            $comment->text = esc($comment->text);
+           
+            if ($comment->deleted_at) {
+                $comment->text = '삭제된 덧글입니다.';
+                $comment->nick = '';
+            } else {
+                $comment->text = esc($comment->text);
+            }
         }
         $result['comments'] = $comments;
 
@@ -67,7 +72,7 @@ class Comment extends BaseController
         $session = session();
         $inputs = $this->request->getJSON();
 
-        $commentModel = model('comment');
+        $commentModel = model('Comment');
         $result = ['error' => false, 'message' => '성공'];
 
         if (! $commentModel->delete($inputs->idx)) {
@@ -82,7 +87,7 @@ class Comment extends BaseController
     {
         $session = session();
         $inputs = $this->request->getJSON();
-        $commentModel = model('comment');
+        $commentModel = model('Comment');
         
         $result = [ 'error' => false, 'message' => '성공!'];
 

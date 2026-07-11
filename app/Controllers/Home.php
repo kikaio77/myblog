@@ -8,19 +8,20 @@ class Home extends BaseController
 {
     public function index(): string
     {   
+		helper('function');
+		
         $page = $this->request->getGet('page') ?? 1;
-        $postModel = model('post');
+        $postModel = model('Post');
 
         $postsCnt = $postModel->countAll();
 
         $posts = $postModel->orderby('id', 'DESC')->paginate(10);
-        
-        $no = 1;
-
+		$now = $_SERVER['REQUEST_TIME'];
+		
         foreach ($posts as $idx => &$row) {
-            $row->no = $no;
-            $row->title = empty($row->title) ? '제목없음' : $row->title;
-            $no++;
+            $row->no = $postsCnt - $idx;
+			$row->created_at = timeAgoForTimeStamp(strtotime($row->created_at), $now);
+			$row->title = empty($row->title) ? '제목없음' : $row->title;
         }
         
         $data['posts'] = $posts;

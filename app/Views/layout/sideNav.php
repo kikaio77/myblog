@@ -26,7 +26,7 @@
 		<h5 class="sb-menu-heading"><i class="xi-view-list me-2"></i>카테고리</h5>
 		<li class="nav-item sb-menu-item-child">
 			<a href="/main" class="nav-link sb-menu-link active">전체보기</a>
-			<?= view_cell('App\Cells\CategoryCell::subNavCategory', []) ?>
+			<?= view_cell('App\Cells\CategoryCell::subNavCategory', [], 7200) ?>
 		</li>
 	</ul>
 </div>

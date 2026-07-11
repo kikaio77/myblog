@@ -16,7 +16,7 @@ class MyPage extends BaseController
         $uid = $this->session->get('user')->id;
         $inputNick = $this->request->getPost('nick');
 
-        $userModel = model('user');
+        $userModel = model('User');
 
         $dupNickUser = $userModel->where('nick', $inputNick)->first();
 

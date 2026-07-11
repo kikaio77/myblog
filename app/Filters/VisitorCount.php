@@ -13,7 +13,6 @@ class VisitorCount implements FilterInterface
     {
 
         if (! $request->getCookie('today_visitor')) {
-            log_message('emergency', '없음');
             helper('cookie');
 
             $redis = service('redis');
@@ -22,7 +21,6 @@ class VisitorCount implements FilterInterface
             $endTime = new DateTime($now->format('Y-m-d') . ' 23:59:59');
 
             $todayCount = $redis->get('day:' . $now->format('Y-m-d'));
-            $monthCount = $redis->get('month:' . $now->format('Y-m'));
             
             if (! $todayCount) {
                $redis->set('day:' . $now->format('Y-m-d'), 1);
@@ -30,15 +28,9 @@ class VisitorCount implements FilterInterface
                 $redis->incr('day:' . $now->format('Y-m-d'));
             }
 
-            if (! $monthCount) {
-                $redis->set('month:' . $now->format('Y-m'), 1);
-            } else {
-                $redis->incr('month:' . $now->format('Y-m'));
-            }
-
             $expired = $endTime->getTimestamp() - $now->getTimestamp();
 
-           set_cookie('today_visitor', 'Y', $expired);
+            set_cookie('today_visitor', 'Y', $expired);
         }
 
     }

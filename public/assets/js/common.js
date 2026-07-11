@@ -30,8 +30,8 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	window.addEventListener('resize', () => {
-		if (window.innerWidth >= 992 && localStorage.getItem('sidenav-toggle')) {
-			// document.body.classList.add('sidenav-toggled');
+		if (window.innerWidth >= 768) {
+			document.body.classList.add('sidenav-toggled');
 		} else {
 			// document.body.classList.remove('sidenav-toggled');
 		}
@@ -93,13 +93,14 @@ function showModal(modalId, config = {}) {
 	if (config.form) {
 		form.action = config['form']['action'] || '';
 		form.method = config['form']['method'] || 'POST';
+		form.id = config['form']['id'] || '';
 	}
 
 	const confirmBtn = modalEl.querySelector('.modal-footer .btn-primary');
 	const cancelBtn = modalEl.querySelector('.modal-footer .btn-secondary');
 
 	if (config.btns.confirm) {
-		confirmBtn.style.display = config.btns.confirm.used ? 'block' : 'none';
+		confirmBtn.style.display = config.btns.confirm.is_used ? 'block' : 'none';
 		confirmBtn.innerText = config.btns.confirm.text || '';
 		// confirmBtn.type = config.btns.confirm.type || 'button';
 		confirmBtn.className = config.btns.confirm.class.join(' ');
@@ -107,7 +108,7 @@ function showModal(modalId, config = {}) {
 	}
 		
 	if (config.btns.cancel) {
-		cancelBtn.style.display = config.btns.cancel.used ? 'block' : 'none';
+		cancelBtn.style.display = config.btns.cancel.is_used ? 'block' : 'none';
 		cancelBtn.innerText = config.btns.cancel.text || '';
 		cancelBtn.type = config.btns.cancel.type || 'button';
 		cancelBtn.className = config.btns.cancel.class.join(' ');
@@ -121,7 +122,7 @@ function showModal(modalId, config = {}) {
 
 function closeModal(modalId) {
 	const modalEl = document.getElementById(modalId);
-	const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-	modal.hide();
+	bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+	document.body.style.overflow = 'auto';
 }
 

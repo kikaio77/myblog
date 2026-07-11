@@ -1,0 +1,26 @@
+[
+    {
+        "name": "closure_66047d0d4602cea5ade5e48dca0eeea7",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-11 01:50:01",
+        "end_at": "2026-07-11 01:50:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    },
+    {
+        "name": "closure_66047d0d4602cea5ade5e48dca0eeea7",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-11 01:49:52",
+        "end_at": "2026-07-11 01:49:52",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    }
+]

@@ -8,8 +8,8 @@ class Category extends BaseController
 {
     public function list($categoryName = null) 
     {
-        log_message('error', $categoryName);
-        
+		helper('function');
+		
         $db = db_connect();
 
         $builder = $db->table('posts');
@@ -26,8 +26,9 @@ class Category extends BaseController
 
         $query = $builder->get()->getResult();
 
-        log_message('error', (string) $db->getLastQuery());
-
+		foreach ($query as &$row) {
+			$row->created_at = timeAgoForTimeStamp(strtotime($row->created_at, $_SERVER['REQUEST_TIME']));
+		}
         $data['title'] = $categoryName;
 
         $data['count'] = $postCnt;

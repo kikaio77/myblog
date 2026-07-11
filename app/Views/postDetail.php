@@ -19,7 +19,7 @@
 <div class="row align-items-center justify-content-between mb-1">
     <div class="col-2">
       <?php if (session()->has('user') && session()->get('user')->is_admin == 1 ): ?>
-      <a href="/posts/<?= $post->id ?>/form" class="btn btn-warning me-auto" role="button">수정</a>
+      <a href="/posts/<?= $post->id ?>/form" class="btn btn-sm btn-warning me-auto" role="button">수정</a>
       <?php endif; ?>
     </div>
     <div class="col-9 text-end">

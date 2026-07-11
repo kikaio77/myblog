@@ -22,7 +22,7 @@ class Join extends BaseController
     {   
         $data = $this->request->getPost();
 
-        $userModel = model('user');
+        $userModel = model('User');
 
         if ($userModel->save($data) === false) {
             $firstErrKey = array_key_first($userModel->errors());

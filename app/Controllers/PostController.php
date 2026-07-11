@@ -11,7 +11,7 @@ class PostController extends BaseController
 {
     public function list($id = null)
     {   
-        $postModel = model('post');
+        $postModel = model('Post');
 
         $session = session();
         $data = [];
@@ -30,7 +30,7 @@ class PostController extends BaseController
                 $postModel->update($id, ['views' => $data['post']->views + 1]);
             }
 
-            $commentModel = model('comment');
+            $commentModel = model('Comment');
 
             $data['comments'] = $commentModel->listByPost($id);
 
@@ -50,8 +50,8 @@ class PostController extends BaseController
 
     public function form($id = '')
     {   
-        $categoryModel = model('category');
-        $postModel = model('post');
+        $categoryModel = model('Category');
+        $postModel = model('Post');
 
         $columns = ['id', 'category_id', 'title', 'content', 'views', 'created_at'];
 
@@ -82,10 +82,10 @@ class PostController extends BaseController
 
         $data = $this->request->getVar();
         $data['title'] = empty($data['title']) ? '제목없음' : $data['title'];
-        $data['content'] = str_replace('<img ', '<img class="img-fluid" ', $data['content']);
+		$data['content'] = strtr($data['content'], ['<img' => "<img class='img-fluid'"]);
         $data['content'] = $purifier->purify($data['content']);
         
-        $postModel = model('post');
+        $postModel = model('Post');
 
         $postModel->save($data);
 
@@ -121,10 +121,11 @@ class PostController extends BaseController
         $purifier = new HTMLPurifier();
 
         $data = $this->request->getPost();
-
+		
+		$data['content'] = strtr($data['content'], ['<img' => "<img class='img-fluid'"]);
         $data['content'] = $purifier->purify($data['content']);
-
-        $postModel = model('post');
+		
+        $postModel = model('Post');
 
         $postModel->insert($data);
 
