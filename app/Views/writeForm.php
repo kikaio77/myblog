@@ -20,7 +20,7 @@
         <?= csrf_field() ?>
         <input type="hidden" name="_method" value="<?= $form['method'] ?>">
         <input type="hidden" name="id" value="<?= $post->id ?>" id="id">
-        <input type="hidden" name="content" id="content" value="<?= $post->content ?>">
+        <input type="hidden" name="content" id="content">
         <div class="ms-auto col-6 mb-2 col-sm-3">
             <select name="category_id" id="category_id" class="form-select">
                 <option value="">카테고리 선택</option>
@@ -82,6 +82,7 @@ const editor = new Quill('#editor', {
                         fetch('/upload/image', {headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]')?.content || '' },method: 'POST', body: formData})
                             .then(res => res.json())
                             .then(d => {
+								console.log(d);
                                 let range = editor.getSelection();
                                 d.uploadedPath.forEach (path => {
                                     editor.insertEmbed(range.index, 'image', path);

@@ -13,9 +13,9 @@
         </tr>
         <tbody>
         <?php if ($posts): ?>
-             <?php foreach ($posts as $idx => $post): ?>
+             <?php foreach ($posts as $post): ?>
                 <tr>
-                    <td class="text-center"><?= $idx + 1 ?></td>
+                    <td class="text-center"><?= $post->no ?></td>
                     <td class="text-center"><a href="/posts/<?= $post->id ?>"><?= $post->title ?></a></td>
                     <td class="text-center"><?= $post->created_at ?></td>
                     <td class="text-center"><?= $post->views ?></td>

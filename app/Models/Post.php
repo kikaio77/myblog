@@ -16,12 +16,14 @@ class Post extends Model
 
     public function getPostCountByCategory()
     {   
-        $sql = "SELECT
-                    c.id, c.name, COUNT(p.id) AS count  
-                FROM categories AS c
-                LEFT JOIN posts AS p
-                    ON c.id = p.category_id
-                GROUP BY c.id, c.name";
+        $sql = "SELECT 
+					c.id, c.name, COUNT(p.id) AS count
+				FROM categories AS c 
+					LEFT JOIN posts AS p 
+						ON c.id = p.category_id
+							AND p.deleted_at IS NULL
+				WHERE c.deleted_at IS NULL 
+				GROUP BY c.id, c.name";
 
         return $this->db->query($sql)->getResult();
     }

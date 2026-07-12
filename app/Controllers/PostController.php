@@ -71,7 +71,7 @@ class PostController extends BaseController
             $data['form']['action'] = "/posts";
         }
 
-        $data['categories'] = $categoryModel->findAll();
+        $data['categories'] = $categoryModel->withDeleted(false)->findAll();
         
         return view('writeForm', $data);
     }
@@ -82,7 +82,7 @@ class PostController extends BaseController
 
         $data = $this->request->getVar();
         $data['title'] = empty($data['title']) ? '제목없음' : $data['title'];
-		$data['content'] = strtr($data['content'], ['<img' => "<img class='img-fluid'"]);
+		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
         $data['content'] = $purifier->purify($data['content']);
         
         $postModel = model('Post');
@@ -122,12 +122,14 @@ class PostController extends BaseController
 
         $data = $this->request->getPost();
 		
-		$data['content'] = strtr($data['content'], ['<img' => "<img class='img-fluid'"]);
+		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
         $data['content'] = $purifier->purify($data['content']);
 		
         $postModel = model('Post');
 
         $postModel->insert($data);
+
+		cache()->delete('subNavCategory');
 
         return redirect()->to('/main');
 

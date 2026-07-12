@@ -38,7 +38,7 @@
 
                         <div class="mb-3">
                         <label for="password_verify">닉네임</label>
-                        <input type="text" name="nickname" id="nickname" class="form-control form-control-sm" required="required">
+                        <input type="text" name="nick" id="nick" class="form-control form-control-sm" required="required">
                         <div class="invalid-feedback">닉네임을 입력해주세요.</div>
                     </div>
 
@@ -49,10 +49,11 @@
             </form>
         </div>
     </div>
+<?= $this->include('layout/modal') ?>
 
 <?php if (session()->has('error')): ?>
 <script>
-    showModal(modal, {html: `<?= session()->get('error') ?>`});
+    showModal('modal', { title: '잘못된 정보 입력', body: `<p><?= session()->get('error') ?></p>`});
 </script>
 <?php endif; ?>
 

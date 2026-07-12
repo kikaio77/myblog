@@ -1,4 +1,5 @@
 <div class="layoutSideNav_nav">
+<?php $isAdmin = session()->has('user') && session()->get('user')->is_admin == 1; ?>
 
 <ul class="profile list-unstyled mb-4">
 	<li class="profileImg mb-2 d-flex justify-content-center align-items-center">
@@ -10,7 +11,7 @@
 			<?= $_ENV['app.shortIntroduce'] ?>
 		</div>
 	</li>
-	<?php if (session()->has('user') && session()->get('user')->is_admin == 1): ?>
+	<?php if ($isAdmin): ?>
 	<li><a href="/posts/form" class="fs-6"><i class="me-2 xi-pen"></i>글쓰기</a></li>
 	<?php endif; ?>
 </ul>
@@ -23,10 +24,14 @@
 		</li>
 	</ul>
 	<ul class="nav nav-pills sb-menu-item">
-		<h5 class="sb-menu-heading"><i class="xi-view-list me-2"></i>카테고리</h5>
+		<h5 class="sb-menu-heading d-flex justify-content-between"><span><i class="xi-view-list me-2"></i>카테고리</span> 
+		<?php if ($isAdmin): ?>
+		<a href="/category/edit" class="ms-auto badge bg-secondary">수정</a>
+		<?php endif; ?>
+	</h5>
 		<li class="nav-item sb-menu-item-child">
 			<a href="/main" class="nav-link sb-menu-link active">전체보기</a>
-			<?= view_cell('App\Cells\CategoryCell::subNavCategory', [], 7200) ?>
+			<?= view_cell('App\Cells\CategoryCell::subNavCategory', [], 7200, 'subNavCategory') ?>
 		</li>
 	</ul>
 </div>

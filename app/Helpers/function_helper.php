@@ -17,3 +17,9 @@ if (! function_exists('timeAgoForTimeStamp')) {
 		}
 	}
 }
+
+if (! function_exists('ipWhiteListIpAddr')) {
+	function isWhiteListIpAddr(string $ip, array $whiteListIps) {
+		return in_array($ip, $whiteListIps);
+	}
+}

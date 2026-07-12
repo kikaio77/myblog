@@ -13,7 +13,7 @@ class Home extends BaseController
         $page = $this->request->getGet('page') ?? 1;
         $postModel = model('Post');
 
-        $postsCnt = $postModel->countAll();
+        $postsCnt = $postModel->where('deleted_at IS NULL')->countAllResults();
 
         $posts = $postModel->orderby('id', 'DESC')->paginate(10);
 		$now = $_SERVER['REQUEST_TIME'];

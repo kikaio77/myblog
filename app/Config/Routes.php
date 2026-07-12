@@ -23,6 +23,9 @@ $routes->group('upload', static function($routes) {
 
 $routes->group('category', static function($routes) {
     $routes->get('(:segment)/post', 'Category::list/$1', ['as' => 'category.post']);
+	$routes->get('edit', 'Category::edit');
+	$routes->post('put', 'Category::put');
+	$routes->post('delete', 'Category::drop');
 });
 $routes->get('/main', 'Home::index');
 $routes->get('/profile', 'Home::profile');

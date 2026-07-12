@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			localStorage.setItem('sidenav-toggle', document.body.classList.contains('sidenav-toggled'));
 		});
 	}
-	if (localStorage.getItem('sidenav-toggle')) {
+	if (localStorage.getItem('sidenav-toggle') && window.innerWidth >= 992) {
 
 		document.body.classList.add('sidenav-toggled');
 	} else {
@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	window.addEventListener('resize', () => {
-		if (window.innerWidth >= 768) {
+		if (window.innerWidth >= 992) {
 			document.body.classList.add('sidenav-toggled');
 		} else {
 			// document.body.classList.remove('sidenav-toggled');
@@ -63,31 +63,24 @@ for (const [key, value] of formData.entries()) {
 return obj;
 }
 
-function showModal(modalId, config = {}) {
-	const modalEl = document.getElementById(modalId);
+function showModal(target, config = {}) {
+	const modalEl = (typeof target === 'object') ? target : document.getElementById(target);
+	
 	if (! modalEl) {
 		return;
 	}
 
-	if (Object.keys(config).length === 0) {
-		config = {
-			'title': `안내`,
-			'body': `<p>정말 그렇게 하시겠습니까?</p>`,
-			'btns': {
-				'confirm': { 'is_used': true, 'class': ['btn', 'btn-sm', 'btn-primary'], 'text': '확인', 'type': 'submit'},
-				'cancel': {'is_used': true, 'class': ['btn', 'btn-sm', 'btn-secondary'], 'text': '닫기', 'type': 'button'}
-			},
-		};
-	}
-
-	if (config.title) {
-		modalEl.querySelector('.modal-header h5').innerText = config.title;
-	}
-
-	if (config.body) {
-		modalEl.querySelector('.modal-body').innerHTML = config.body;
-	}
-
+	config.title = config.title ?? '안내';
+	config.body = config.body ?? `<p>정말 그렇게 하시겠습니까?</p>`;
+	config.btns = config.btns ?? {};
+	
+	config.btns.confirm = config.btns.confirm ?? { 'is_used': false, 'class': ['btn', 'btn-sm', 'btn-primary'], 'text': '확인', 'type': 'submit'}; 
+	config.btns.cancel = config.btns.cancel ?? {'is_used': true, 'class': ['btn', 'btn-sm', 'btn-secondary'], 'text': '닫기', 'type': 'button'};
+	
+	modalEl.querySelector('.modal-header h5').innerText = config.title;
+	
+	modalEl.querySelector('.modal-body').innerHTML = config.body;
+	
 	const form = modalEl.querySelector('form');
 
 	if (config.form) {
@@ -102,9 +95,7 @@ function showModal(modalId, config = {}) {
 	if (config.btns.confirm) {
 		confirmBtn.style.display = config.btns.confirm.is_used ? 'block' : 'none';
 		confirmBtn.innerText = config.btns.confirm.text || '';
-		// confirmBtn.type = config.btns.confirm.type || 'button';
 		confirmBtn.className = config.btns.confirm.class.join(' ');
-
 	}
 		
 	if (config.btns.cancel) {
@@ -114,9 +105,9 @@ function showModal(modalId, config = {}) {
 		cancelBtn.className = config.btns.cancel.class.join(' ');
 
 	}
-	const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+	const modalObj = bootstrap.Modal.getOrCreateInstance(modalEl);
 
-	modal.show();
+	modalObj.show();
 
 }
 

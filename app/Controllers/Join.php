@@ -26,6 +26,7 @@ class Join extends BaseController
 
         if ($userModel->save($data) === false) {
             $firstErrKey = array_key_first($userModel->errors());
+			log_message('info', $userModel->errors()[$firstErrKey]);
             return redirect()->back()->withInput()->with('error', $userModel->errors()[$firstErrKey]);
         }
         return redirect('/')->with('message', '회원가입이 완료되었습니다.');

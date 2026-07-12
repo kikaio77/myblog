@@ -7,7 +7,8 @@ class Upload extends BaseController
     public function image()
     {
        $files = $this->request->getFileMultiple('images');
-	
+		
+		log_message('emergency', print_r($files, true));
         $data = [];
         
         foreach ($files as $file) {
