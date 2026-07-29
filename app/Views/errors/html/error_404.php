@@ -76,7 +76,7 @@
             <?php if (ENVIRONMENT !== 'production') : ?>
                 <?= nl2br(esc($message)) ?>
             <?php else : ?>
-                <?= lang('Errors.sorryCannotFind') ?>
+                <?= $_ENV['error.message.404'] ?>
             <?php endif; ?>
         </p>
     </div>

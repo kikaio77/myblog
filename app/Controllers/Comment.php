@@ -6,6 +6,8 @@ class Comment extends BaseController
 {   
     public function list($postId)
     {
+		helper('function');
+		
         $session = session();
         $user = $session->get('user');
         
@@ -16,7 +18,7 @@ class Comment extends BaseController
         foreach ($commentsByPost as &$comment) {
        
             $comment->isWriter = $user ? $comment->uid === $user->id : false;
-           
+			$comment->created_at = timeAgoForTimeStamp(strtotime($comment->created_at), $_SERVER['REQUEST_TIME']);
             if ($comment->deleted_at) {
                 $comment->text = '삭제된 덧글입니다.';
                 $comment->nick = '';
@@ -30,6 +32,7 @@ class Comment extends BaseController
     }
     public function new()
     {
+		
         $session = session();
         $inputs = $this->request->getJSON();
 

@@ -19,7 +19,8 @@ class Login extends BaseController
         $result = [];
         $state = bin2hex(random_bytes(16));
         $naverCallbackUrl = urlencode(config('App')->baseURL . 'oauth/social/naver');
-        $result['socialLoginURLs']['naver'] = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={$_ENV['naver.client.id']}&redirect_uri={$naverCallbackUrl}&state={$state}";
+		log_message('emergency', $naverCallbackUrl);
+		$result['socialLoginURLs']['naver'] = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={$_ENV['naver.client.id']}&redirect_uri={$naverCallbackUrl}&state={$state}";
        
         return view('login', $result);
     }

@@ -17,17 +17,30 @@ class PostController extends BaseController
         $data = [];
         if ($id) {
             
-            $uuid = session_id();
-
+			$userIp = $this->request->getIPAddress();
+			
             $redis = \Config\Services::redis();
-            
-            $views = $redis->hget("$uuid:blog_views", $id);
+			
+			$accessKey = "$userIp:blog_views";
+			
+            $views = $redis->hget($accessKey, $id);
             
             $data['post'] = $postModel->find($id);
+			
+			if (! $data['post']) {
+				throw new \CodeIgniter\Exceptions\PageNotFoundException($_ENV['error.message.404']);
+			}
             $data['pager'] = null;
+		
+			$tomorrowMidnight = strtotime('tomorrow midnight +2 minutes');
+			
+
+			$expireSec = $tomorrowMidnight - $_SERVER['REQUEST_TIME'];
+			
             if (! $views) {
-                $redis->hset("{$uuid}:blog_views", $id, 1);
+                $redis->hset($accessKey, $id, 1);
                 $postModel->update($id, ['views' => $data['post']->views + 1]);
+				$redis->expire($accessKey, $expireSec);
             }
 
             $commentModel = model('Comment');
@@ -134,4 +147,16 @@ class PostController extends BaseController
         return redirect()->to('/main');
 
     }
+	
+	public function delete($id) {
+		
+		log_message('info', '이거탐?');
+		$postModel = model('Post');
+		
+		if (! $postModel->delete($id)) {
+			return $this->response->setJSON(['error' =>  true, 'message' => '삭제에 실패했습니다.']);
+		}
+		
+		return $this->response->setJSON(['error' =>  false, 'message' => '삭제 성공!']);
+	}
 }

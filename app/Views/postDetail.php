@@ -17,10 +17,15 @@
 <?= $this->section('content') ?>
 <h4 class="content-title"><?= $post->title ?></h4>
 <div class="row align-items-center justify-content-between mb-1">
-    <div class="col-2">
+    <div class="col-2 gap-1 d-flex">
       <?php if (session()->has('user') && session()->get('user')->is_admin == 1 ): ?>
-      <a href="/posts/<?= $post->id ?>/form" class="btn btn-sm btn-warning me-auto" role="button">수정</a>
-      <?php endif; ?>
+      <a href="/posts/<?= $post->id ?>/form" class="text-nowrap btn btn-sm btn-warning" role="button">수정</a>
+      
+	  <form action="/posts/<?= $post->id ?>" method="POST" class="dropPost">
+		<?= csrf_field() ?>
+		<button type="submit" data-delete="true" data-idx="<?= $post->id ?>" class="text-nowrap btn btn-sm btn-danger me-auto" role="button">삭제</button>
+	  </form>
+	  <?php endif; ?>
     </div>
     <div class="col-9 text-end">
         <span class="text-secondary"><?= $post->created_at ?></span>
@@ -56,6 +61,52 @@
   
 document.querySelectorAll('pre code').forEach(block => {
     hljs.highlightElement(block);
+});
+
+document.addEventListener('click', e => {
+	
+	if (e.target.dataset.delete) {
+		
+		 showModal(modal, {title: '글 삭제', 
+							btns: { 
+								confirm: 
+									{
+										is_used: true, 
+										class: ['btn', 'btn-sm', 'btn-primary'], 
+										text: '확인'
+									}
+							},
+							body: `	<?= csrf_field() ?>			
+									<input type="hidden" name="idx" value="<?= $post->id ?>" /> <p>정말 해당 글을 삭제하시겠습니까?</p>`,
+							form: {action: '/posts/<?= $post->id ?>/delete', method: 'POST', id: 'deletePost'}});
+	}
+});
+
+
+
+document.addEventListener('submit', e => {
+	e.preventDefault();
+		console.log('이거탐?');
+	const _this = e.target;
+    if (_this.id === 'deletePost') {
+		console.log('이거탐?');
+       fetch(_this.action, {
+			   headers: { 
+					'Content-Type': 'x-www-form-urlencoded', 
+					'x-requested-with': 'XMLHttpRequest'
+				},
+				method: _this.method,
+				body: new URLSearchParams(serializeObject(_this))
+			})
+			.then(result => result.json())
+			.then(d => {
+				alert(d.message);
+				if (! d.error) {
+					
+					window.location.href = '/';
+				}
+			});
+    }
 });
 
 const list = document.getElementById('commentList');
@@ -133,7 +184,7 @@ function printComments(data) {
             const bodyInner = document.createElement('div');
             bodyInner.classList.add('row', 'mb-1');
             const leftPart = document.createElement('div');
-            leftPart.classList.add('col-8');
+            leftPart.classList.add('col-6', 'col-md-8');
             const nick = document.createElement('strong');
             nick.classList.add('me-2');
             nick.innerText = row.nick;
@@ -143,7 +194,7 @@ function printComments(data) {
             leftPart.append(nick);
             leftPart.append(writtenTime)
             const rightPart = document.createElement('div');
-            rightPart.classList.add('col-4', 'd-flex', 'justify-content-end', 'gap-1');
+            rightPart.classList.add('col-6', 'col-md-4', 'd-flex', 'justify-content-end', 'gap-1');
             
 
             if (row.isWriter) {
@@ -314,7 +365,7 @@ function printComments(data) {
                        // replyLeft.classList.add('p-1');
                         // replyLeft.innerText = 'ㄴ';
                         replyRight.classList.add('w-100');
-                        replyForm.classList.add('d-flex', 'card', 'align-items-start', 'p-3', 'w-50');
+                        replyForm.classList.add('d-flex', 'card', 'align-items-start', 'p-3', 'w-80');
                         const textarea = document.createElement('textarea');
                         textarea.classList.add('form-control');
                         textarea.setAttribute('name', 'text');
@@ -342,7 +393,7 @@ function printComments(data) {
             
             itemBody.append(bodyInner, content, textarea);
             itemCont.append(itemBody);
-            div.style.width = `calc(100% - (${row.depth}*20px))`;
+            div.style.width = `calc(100% - (${row.depth}*5px))`;
             div.append(itemCont);
             fragment.append(div);
     });

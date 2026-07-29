@@ -12,9 +12,25 @@ class VisitorCountCell
 
         $now = new DateTime();
 
-        $todayVisitors = (int) $redis->get('day:' . $now->format('Y-m-d')) ?? 0; 
-        $monthVisitors = (int) $redis->get('month:' . $now->format('Y-m')) ?? 0;
+        $todayVisitors = (int) ($redis->get('day:' . $now->format('Y-m-d')) ?? 0); 
 
+		$monthVisitors = (int) ($redis->get('month:' . $now->format('Y-m')) ?? 0); 
+		
+		if ($monthVisitors < 1) {
+			$db = db_connect();
+			
+			$builder = $db->table('project_info');
+			
+			$projectInfo = $builder->get()->getRow();
+			
+			if ($projectInfo) {
+				$monthVisitors = $projectInfo->sum_visitors_month;
+				$redis->set('month:' . $now->format('Y-m'), $monthVisitors);
+			}
+			
+		}
+		
+		
         return "<li class='visitor-views row d-grid gap-1 mb-3 px-2'>
                     <div class='d-flex'>
                         <span>Today: </span><span class='ms-auto'>" . number_format($todayVisitors) ."</span>

@@ -131,14 +131,23 @@ class CronJob extends \Daycry\CronJob\Config\CronJob
 			$redis = \Config\Services::redis(true);
 
 			$oneDayAgo = date('Y-m-d', strtotime('-1 days'));
+			$thisMonth = date('Y-m');
 			
-			$visitorsInYesterDay = $redis->get("day:" . $oneDayAgo) ?? 0;
+			$visitorsInYesterDay = (int) ($redis->get("day:" . $oneDayAgo) ?? 0);
+			
+			$visitorsInMonth = (int) ($redis->get("month:" . $thisMonth) ?? 0);
+			 
+			log_message('info', $visitorsInYesterDay);
+			
+			 
+			$redis->set('month:' . $thisMonth, $visitorsInMonth + $visitorsInYesterDay);
 			
 			$builder = $db->table('project_info');
 			
 			$builder->set('sum_visitors_month', 'sum_visitors_month + ' . $visitorsInYesterDay, false)
 					->update();
-		})->daily('00:00 am');
+					
+		})->daily('00:00');
 		
         // $schedule->command('foo:bar')->everyMinute();
 

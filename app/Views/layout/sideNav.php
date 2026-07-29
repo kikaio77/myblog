@@ -5,7 +5,7 @@
 	<li class="profileImg mb-2 d-flex justify-content-center align-items-center">
 		<img class="img-fluid rounded shadow-sm" src="/assets/images/profile.png" alt="profile_img">
 	</li>
-	<?= view_cell('App\Cells\VisitorCountCell::view', [], 1200, 'visitorCountCell') ?>
+	<?= view_cell('App\Cells\VisitorCountCell::view', [], 120, 'visitorCountCell') ?>
 	<li class="profileIntro">
 		<div class="text-center">
 			<?= $_ENV['app.shortIntroduce'] ?>

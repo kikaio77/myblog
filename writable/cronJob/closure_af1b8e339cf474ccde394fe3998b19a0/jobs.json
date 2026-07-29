@@ -1,0 +1,26 @@
+[
+    {
+        "name": "closure_af1b8e339cf474ccde394fe3998b19a0",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-17 09:00:01",
+        "end_at": "2026-07-17 09:00:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": "\"Error: Call to undefined function Config\\\\data() in \\\/var\\\/www\\\/html\\\/myblog\\\/app\\\/Config\\\/CronJob.php:134\\nStack trace:\\n#0 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Config\\\\CronJob->Config\\\\{closure}()\\n#1 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Closure->__invoke()\\n#2 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(161): Daycry\\\\CronJob\\\\Job->runClosure()\\n#3 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/JobRunner.php(90): Daycry\\\\CronJob\\\\Job->run()\\n#4 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Commands\\\/Run.php(83): Daycry\\\\CronJob\\\\JobRunner->run()\\n#5 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Commands.php(74): Daycry\\\\CronJob\\\\Commands\\\\Run->run()\\n#6 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Console.php(47): CodeIgniter\\\\CLI\\\\Commands->run()\\n#7 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(388): CodeIgniter\\\\CLI\\\\Console->run()\\n#8 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(133): CodeIgniter\\\\Boot::runCommand()\\n#9 \\\/var\\\/www\\\/html\\\/myblog\\\/spark(87): CodeIgniter\\\\Boot::bootSpark()\\n#10 {main}\"",
+        "test_time": null
+    },
+    {
+        "name": "closure_af1b8e339cf474ccde394fe3998b19a0",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-07-16 09:00:01",
+        "end_at": "2026-07-16 09:00:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": "\"Error: Call to undefined function Config\\\\data() in \\\/var\\\/www\\\/html\\\/myblog\\\/app\\\/Config\\\/CronJob.php:134\\nStack trace:\\n#0 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Config\\\\CronJob->Config\\\\{closure}()\\n#1 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Closure->__invoke()\\n#2 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(161): Daycry\\\\CronJob\\\\Job->runClosure()\\n#3 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/JobRunner.php(90): Daycry\\\\CronJob\\\\Job->run()\\n#4 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Commands\\\/Run.php(83): Daycry\\\\CronJob\\\\JobRunner->run()\\n#5 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Commands.php(74): Daycry\\\\CronJob\\\\Commands\\\\Run->run()\\n#6 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Console.php(47): CodeIgniter\\\\CLI\\\\Commands->run()\\n#7 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(388): CodeIgniter\\\\CLI\\\\Console->run()\\n#8 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(133): CodeIgniter\\\\Boot::runCommand()\\n#9 \\\/var\\\/www\\\/html\\\/myblog\\\/spark(87): CodeIgniter\\\\Boot::bootSpark()\\n#10 {main}\"",
+        "test_time": null
+    }
+]

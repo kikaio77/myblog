@@ -16,19 +16,22 @@ class VisitorCount implements FilterInterface
             helper('cookie');
 
             $redis = service('redis');
-
-            $now = new DateTime();
-            $endTime = new DateTime($now->format('Y-m-d') . ' 23:59:59');
-
+	
+			$now = new DateTime();
+			
+            $endTime = new DateTime('tomorrow midnight');
+			
+			$endTime->modify('+3 minutes');
+			
             $todayCount = $redis->get('day:' . $now->format('Y-m-d'));
             
             if (! $todayCount) {
                $redis->set('day:' . $now->format('Y-m-d'), 1);
             } else {
-                $redis->incr('day:' . $now->format('Y-m-d'));
+               $redis->incr('day:' . $now->format('Y-m-d'));
             }
-
-            $expired = $endTime->getTimestamp() - $now->getTimestamp();
+			
+            $expired = $endTime->getTimestamp() - $_SERVER['REQUEST_TIME'];
 
             set_cookie('today_visitor', 'Y', $expired);
         }

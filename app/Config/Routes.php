@@ -15,6 +15,7 @@ $routes->group('posts', static function($routes) {
     $routes->get('(:num)?/form', 'PostController::form/$1');
     $routes->post('', 'PostController::new');
     $routes->put('(:num)', 'PostController::update/$1');
+	$routes->post('(:num)/delete', 'PostController::delete/$1');
 });
 
 $routes->group('upload', static function($routes) {
