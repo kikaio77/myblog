@@ -65,7 +65,7 @@ class PostController extends BaseController
     {   
         $categoryModel = model('Category');
         $postModel = model('Post');
-
+		$tempPostModel = model('TemporaryPost');
         $columns = ['id', 'category_id', 'title', 'content', 'views', 'created_at'];
 
         $data = [];
@@ -83,7 +83,7 @@ class PostController extends BaseController
             $data['form']['method'] = 'POST';
             $data['form']['action'] = "/posts";
         }
-
+		$data['tempPosts'] = $tempPostModel->withDeleted(false)->orderBy('id', 'DESC')->findAll();
         $data['categories'] = $categoryModel->withDeleted(false)->findAll();
         
         return view('writeForm', $data);
@@ -158,5 +158,31 @@ class PostController extends BaseController
 		}
 		
 		return $this->response->setJSON(['error' =>  false, 'message' => '삭제 성공!']);
+	}
+	
+	public function tempSave() {
+		$reqData = $this->request->getJSON();
+		
+		$tempPostModel = model('TemporaryPost');
+
+		$saveData = [
+			'title' => $reqData->title,
+			'content' => $reqData->content,
+		];
+		
+		if (!empty($reqData->id)) {
+			$saveData['id'] = $reqData->id;
+			if (! $tempPostModel->save($saveData)) {
+				return $this->response->setJSON(['error' => false]);
+			}
+			$newId = $reqData->id;
+		} else {
+			if (! $tempPostModel->save($saveData)) {
+				return $this->response->setJSON(['error' => false]);
+			}
+			$newId = $tempPostModel->getInsertId();
+		}		
+		
+		return $this->response->setJSON(['error' => false , 'newId' => $newId, 'tempLists' =>  $tempPostModel->findAll()]);
 	}
 }

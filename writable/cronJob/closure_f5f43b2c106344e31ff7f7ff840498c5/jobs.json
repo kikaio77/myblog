@@ -1,0 +1,26 @@
+[
+    {
+        "name": "closure_f5f43b2c106344e31ff7f7ff840498c5",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-08-02 03:34:11",
+        "end_at": "2026-08-02 03:34:11",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    },
+    {
+        "name": "closure_f5f43b2c106344e31ff7f7ff840498c5",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-08-02 03:34:01",
+        "end_at": "2026-08-02 03:34:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    }
+]

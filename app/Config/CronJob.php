@@ -129,23 +129,34 @@ class CronJob extends \Daycry\CronJob\Config\CronJob
 			$db = db_connect();
 			
 			$redis = \Config\Services::redis(true);
+			
+			$yesterday = strtotime('-1 days');
 
-			$oneDayAgo = date('Y-m-d', strtotime('-1 days'));
-			$thisMonth = date('Y-m');
+			$oneDayAgo = date('Y-m-d', $yesterday);
+			$endOfMonth = date('Y-m-t', $yesterday);
+			$thisMonth = date('Y-m', $yesterday);
 			
 			$visitorsInYesterDay = (int) ($redis->get("day:" . $oneDayAgo) ?? 0);
-			
 			$visitorsInMonth = (int) ($redis->get("month:" . $thisMonth) ?? 0);
-			 
-			log_message('info', $visitorsInYesterDay);
 			
-			 
-			$redis->set('month:' . $thisMonth, $visitorsInMonth + $visitorsInYesterDay);
+			$sumAllVisitorsInMonth = $visitorsInMonth + $visitorsInYesterDay;
 			
+			$redis->set('month:' . $thisMonth, $sumAllVisitorsInMonth);
+
 			$builder = $db->table('project_info');
 			
-			$builder->set('sum_visitors_month', 'sum_visitors_month + ' . $visitorsInYesterDay, false)
+			if ($oneDayAgo === $endOfMonth) {
+				$builder->set('sum_visitors_month', 0)
+						->set('sum_visitors_all', 'sum_visitors_all +' . $sumAllVisitorsInMonth, false)
+						->update();
+				$redis->del('month:' . $thisMonth);
+				
+			} else {
+				$builder->set('sum_visitors_month', 'sum_visitors_month + ' . $visitorsInYesterDay, false)
 					->update();
+			}
+			
+			$redis->del("day:" . $oneDayAgo);
 					
 		})->daily('00:00');
 		

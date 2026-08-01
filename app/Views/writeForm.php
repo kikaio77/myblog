@@ -16,6 +16,14 @@
 <?= $this->section('content') ?>
 <h4 class="content-title">글 등록/수정</h4>
 <article>
+	<div class="ms-auto col-6 mb-2 col-sm-3">
+		<select name="temp_post" id="temp_post" class="form-select">
+			<option value="">임시 작성글 선택</option>
+			<?php foreach ($tempPosts as $tempPost): ?>
+			<option value="" data-idx="<?= $tempPost->id ?>" data-content="<?= esc($tempPost->content, 'attr') ?>"><?= $tempPost->updated_at . ' | ' . $tempPost->title ?></option>
+			<?php endforeach; ?>
+		</select>
+	</div>
    <form name="postForm" id="postForm" method="POST" action="<?= $form['action'] ?>">
         <?= csrf_field() ?>
         <input type="hidden" name="_method" value="<?= $form['method'] ?>">
@@ -42,11 +50,24 @@
         </div>
    </form> 
 </article>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="saveToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+		<div class="d-flex">
+			<div class="toast-body text-white fw-bold">
+				<i class="bi bi-check-circle me-1"></i> 임시저장 완료
+			</div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+		</div>
+	</div>
+</div>
 <?= $this->endSection() ?>
 
 
 <?= $this->section('js') ?>
 <script>
+let prevContent = '';
+const saveToast = bootstrap.Toast.getOrCreateInstance(document.getElementById('saveToast'));
 
 const editor = new Quill('#editor', { 
     theme: 'snow',
@@ -82,7 +103,6 @@ const editor = new Quill('#editor', {
                         fetch('/upload/image', {headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]')?.content || '' },method: 'POST', body: formData})
                             .then(res => res.json())
                             .then(d => {
-								console.log(d);
                                 let range = editor.getSelection();
                                 d.uploadedPath.forEach (path => {
                                     editor.insertEmbed(range.index, 'image', path);
@@ -105,5 +125,67 @@ document.getElementById('postForm').addEventListener('submit', (e) => {
 
     _this.submit();
 });
+
+document.addEventListener('change', e => {
+	if (e.target.id === 'temp_post') {
+		const postForm = document.getElementById('postForm');
+		const selOption = e.target.options[e.target.selectedIndex];
+
+		postForm.querySelector('#title').value = selOption.text.split('|')[1];
+		postForm.querySelector('#id').value = selOption.dataset.idx;
+		
+		editor.root.innerHTML = e.target.options[e.target.selectedIndex].dataset.content;
+		prevContent = editor.root.innerHTML;
+	}
+});
+setInterval(updateTempPost, 30000);
+
+
+
+async function updateTempPost() {
+	try {
+		
+		const postForm = document.getElementById('postForm');
+		const currentContent = editor.getSemanticHTML ? editor.getSemanticHTML() : editor.root.innerHTML;
+		postForm.querySelector('input[name="content"]').value = currentContent;
+				
+		if (
+			currentContent !== prevContent
+		) {
+		
+			const res = await fetch('/posts/temp/save', {headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="X-CSRF-TOKEN"]')?.content || '', 'Content-Type': 'application/json' },method: 'POST', body: JSON.stringify(serializeObject(postForm))});
+			
+			if (!res.ok) {
+				throw new Error('임시저장에 실패했습니다.');
+			}
+			prevContent = currentContent;
+
+			const data = await res.json();
+
+			if (data.tempLists) {
+				saveToast.show();
+				const tempPost = document.getElementById('temp_post');
+				
+				tempPost.querySelectorAll('option').forEach( option => option.remove());
+				postForm.querySelector('#id').value = data.newId;
+				
+				for (let temp of data.tempLists) {
+					const option = document.createElement('option');
+					option.text = temp.updated_at + ' | ' + temp.title;
+					option.value = temp.id;
+					option.dataset.content = temp.content;
+					option.dataset.idx = temp.id;
+					
+					document.getElementById('temp_post').append(option);
+				}
+			}
+		}
+
+	} catch (err) {
+		alert(err);
+	}
+	
+
+}
 </script>
 <?= $this->endSection() ?>
