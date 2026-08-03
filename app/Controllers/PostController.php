@@ -83,7 +83,7 @@ class PostController extends BaseController
             $data['form']['method'] = 'POST';
             $data['form']['action'] = "/posts";
         }
-		$data['tempPosts'] = $tempPostModel->withDeleted(false)->orderBy('id', 'DESC')->findAll();
+		$data['tempPosts'] = $tempPostModel->withDeleted(false)->orderBy('updated_at', 'DESC')->findAll();
         $data['categories'] = $categoryModel->withDeleted(false)->findAll();
         
         return view('writeForm', $data);
@@ -150,7 +150,6 @@ class PostController extends BaseController
 	
 	public function delete($id) {
 		
-		log_message('info', '이거탐?');
 		$postModel = model('Post');
 		
 		if (! $postModel->delete($id)) {
@@ -164,11 +163,14 @@ class PostController extends BaseController
 		$reqData = $this->request->getJSON();
 		
 		$tempPostModel = model('TemporaryPost');
+		
+		$purifier = new HTMLPurifier;
 
 		$saveData = [
 			'title' => $reqData->title,
-			'content' => $reqData->content,
+			'content' => $purifier->purify($reqData->content),
 		];
+		
 		
 		if (!empty($reqData->id)) {
 			$saveData['id'] = $reqData->id;

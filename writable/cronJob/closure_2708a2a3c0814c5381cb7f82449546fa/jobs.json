@@ -1,0 +1,14 @@
+[
+    {
+        "name": "closure_2708a2a3c0814c5381cb7f82449546fa",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-08-03 00:00:01",
+        "end_at": "2026-08-03 00:00:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": null,
+        "test_time": null
+    }
+]

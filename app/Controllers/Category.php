@@ -16,8 +16,15 @@ class Category extends BaseController
 
         $builder->select('posts.id, posts.category_id, posts.title, posts.content, posts.views, posts.created_at, categories.id as category_id, categories.name')
                 ->join('categories', 'posts.category_id = categories.id');
-
+		
+		$categoryModel = model('Category');
+		
         if ($categoryName) {
+			$existCategoryForName = $categoryModel->where('name', $categoryName)->countAllResults();
+				
+			if (! $existCategoryForName) {
+				throw new \CodeIgniter\Exceptions\PageNotFoundException($_ENV['error.message.404']);
+			}
             $builder->where('categories.name', $categoryName);
         }
         $builder->where('posts.deleted_at IS NULL')
