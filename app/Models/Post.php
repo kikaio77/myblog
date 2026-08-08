@@ -22,8 +22,9 @@ class Post extends Model
 					LEFT JOIN posts AS p 
 						ON c.id = p.category_id
 							AND p.deleted_at IS NULL
-				WHERE c.deleted_at IS NULL 
-				GROUP BY c.id, c.name";
+				WHERE c.deleted_at IS NULL
+				GROUP BY c.id, c.name
+				ORDER BY c.name ASC";
 
         return $this->db->query($sql)->getResult();
     }

@@ -47,20 +47,27 @@ class Category extends BaseController
     }
 	
 	public function edit()
-	{
+	{	
+		$session = session();
+		
 		helper('function');
 		$categoryModel = model('Category');
 		
-		
-		$ip = $this->request->getIPAddress();
-		$whiteListIps = explode('|', $_ENV['policy.whiteListIps']);
-		
-		if (! isWhiteListIpAddr($ip, $whiteListIps) ) {
+		if (
+			$session->has('user') 
+			&& (! (bool)$session->get('user')->is_admin) 
+		) {
 			throw new \CodeIgniter\Exceptions\PageNotFoundException($_ENV['error.message.404']);
+		}
+		// $ip = $this->request->getIPAddress();
+		// $whiteListIps = explode('|', $_ENV['policy.whiteListIps']);
+		
+		// if (! isWhiteListIpAddr($ip, $whiteListIps) ) {
+			// throw new \CodeIgniter\Exceptions\PageNotFoundException($_ENV['error.message.404']);
 
-		} 
+		// } 
+		
 		$data['categories'] = $categoryModel->get();
-		// $data['categoriesAllCnt'] = sizeof($data['categories']);
 		$data['title'] = '블로그 카테고리 수정';
 		
 		return view('categoryEdit', $data);
