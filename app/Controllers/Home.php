@@ -34,8 +34,10 @@ class Home extends BaseController
     }
 
     public function profile(): string
-    {
-        return view('profile');
+    {	
+		helper('function');
+		
+        return view('profile', [ 'birthDate' =>  $_ENV['profile.birthDate'], 'age' => calcAgeForKor($_ENV['profile.birthDate']) ]);
     }
 
     public function portfolio(): string

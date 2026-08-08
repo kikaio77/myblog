@@ -23,3 +23,16 @@ if (! function_exists('ipWhiteListIpAddr')) {
 		return in_array($ip, $whiteListIps);
 	}
 }
+
+if (! function_exists('calcAgeForKor')) {
+	function calcAgeForKor(string $birthDate) {
+		$birthDate = new DateTime($birthDate);
+		
+		$now = new DateTime();
+		$birthYear = $birthDate->format('Y');
+		
+		$thisBirthDate = new DateTime($now->format('Y') . '-' . $birthDate->format('m-d'));
+		
+		return (int)$now->format('Y') - (int)$birthYear + ((bool) ( $now->getTimeStamp() >= $thisBirthDate->getTimeStamp() ));
+	}
+}

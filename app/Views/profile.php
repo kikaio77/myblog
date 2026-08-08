@@ -7,7 +7,7 @@
 <h6 class="display-6">임승혁(IM SEUNG HYUK)</h6>
 <img class="img-fluid border mb-3" src="assets/images/profile.png" alt="profile_photo">
 <ul class="mb-5">
-    <li>출생: 1994.10.30 (33세)</li>
+    <li>출생: <?= $birthDate ?> (<?= $age ?>세)</li>
     <li>거주지: 서울시 은평구</li>
     <li><u title="풀 스택 PHP 개발자">풀 스택 PHP 개발자</u>이자 <u>누군가의 새 신랑</u></li>
     <li>장점: 포기하지않는 근성!</li>
