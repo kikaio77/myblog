@@ -12,14 +12,16 @@ class Home extends BaseController
 		
         $page = $this->request->getGet('page') ?? 1;
         $postModel = model('Post');
-
+		$offset = $_ENV['app.pagination.offset'];
+		
         $postsCnt = $postModel->where('deleted_at IS NULL')->countAllResults();
 
-        $posts = $postModel->orderby('id', 'DESC')->paginate(10);
+        $posts = $postModel->orderby('id', 'DESC')->paginate($offset);
 		$now = $_SERVER['REQUEST_TIME'];
 		
         foreach ($posts as $idx => &$row) {
-            $row->no = $postsCnt - $idx;
+            $row->no = $postsCnt - (($page - 1) * $offset) - $idx;
+
 			$row->created_at = timeAgoForTimeStamp(strtotime($row->created_at), $now);
 			$row->title = empty($row->title) ? '제목없음' : $row->title;
         }

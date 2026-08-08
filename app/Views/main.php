@@ -1,6 +1,32 @@
 <?= $this->extend('layout/default') ?>
-
 <?= $this->section('content') ?>
+<style>
+
+@media screen and (min-width: 763px) {
+	
+.table tbody tr td:nth-child(2) > a {
+    display: inline-block;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;	
+}
+
+	
+}
+
+@media screen and (min-width: 992px) {
+	
+.table tbody tr td:nth-child(2) > a {
+   
+    max-width: 60%;
+   	
+}
+
+	
+}
+
+</style>
     <h4 class="content-title mb-5">전체글보기 <small>(<?= $postCnt ?>)</small></h4>
     
     <article class="p-3 article">

@@ -32,6 +32,7 @@ class Comment extends BaseController
     }
     public function new()
     {
+		helper('function');
 		
         $session = session();
         $inputs = $this->request->getJSON();
@@ -64,6 +65,7 @@ class Comment extends BaseController
             } else {
                 $comment->text = esc($comment->text);
             }
+			$comment->created_at = timeAgoForTimeStamp(strtotime($comment->created_at), $_SERVER['REQUEST_TIME']);
         }
         $result['comments'] = $comments;
 

@@ -138,7 +138,7 @@ document.addEventListener('change', e => {
 		prevContent = editor.root.innerHTML;
 	}
 });
-setInterval(updateTempPost, 30000);
+setInterval(updateTempPost, 60000);
 
 
 

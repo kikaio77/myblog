@@ -58,7 +58,9 @@
 </div>
 
 <script>
-  
+ 
+let isClickReplyBtn = false;
+
 document.querySelectorAll('pre code').forEach(block => {
     hljs.highlightElement(block);
 });
@@ -86,10 +88,8 @@ document.addEventListener('click', e => {
 
 document.addEventListener('submit', e => {
 	e.preventDefault();
-		console.log('이거탐?');
 	const _this = e.target;
     if (_this.id === 'deletePost') {
-		console.log('이거탐?');
        fetch(_this.action, {
 			   headers: { 
 					'Content-Type': 'x-www-form-urlencoded', 
@@ -232,6 +232,9 @@ function printComments(data) {
                     cancelBtn.style.display = 'none';
 
                     cancelBtn.addEventListener('click', e => {
+						
+						isClickReplyBtn = false;
+						
                         modifyBtn.style.display = 'block';
                         delBtn.style.display = 'block';
                         submitBtn.style.display = 'none';
@@ -290,6 +293,14 @@ function printComments(data) {
 
 
                     replyBtn.addEventListener('click', e => {
+						
+						if (isClickReplyBtn){
+							e.preventDefault();
+							return false;
+						}
+						
+						isClickReplyBtn = true;
+						
                         const replyForm = document.createElement('form');
                         const replyLeft = document.createElement('div');
                      
@@ -355,7 +366,7 @@ function printComments(data) {
                             .then(d => {
                                  list.innerHTML = '';
                                  list.append(printComments(d));
-                                
+                                isClickReplyBtn = !isClickReplyBtn;
                             });
 
                         });
@@ -365,7 +376,8 @@ function printComments(data) {
                        // replyLeft.classList.add('p-1');
                         // replyLeft.innerText = 'ㄴ';
                         replyRight.classList.add('w-100');
-                        replyForm.classList.add('d-flex', 'card', 'align-items-start', 'p-3', 'w-80');
+                        replyForm.classList.add('d-flex', 'card', 'align-items-start', 'p-3');
+						replyForm.style.width = '70%';
                         const textarea = document.createElement('textarea');
                         textarea.classList.add('form-control');
                         textarea.setAttribute('name', 'text');

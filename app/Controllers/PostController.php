@@ -34,7 +34,6 @@ class PostController extends BaseController
 		
 			$tomorrowMidnight = strtotime('tomorrow midnight +2 minutes');
 			
-
 			$expireSec = $tomorrowMidnight - $_SERVER['REQUEST_TIME'];
 			
             if (! $views) {
@@ -49,9 +48,18 @@ class PostController extends BaseController
 
             $returnView = 'postDetail';
         } else {
-            $data['posts'] = $postModel->paginate(10, 'posts');
+			$postCnt = $postModel->countAllResults();
+			
+			$offset = $_ENV['app.pagination.offset'];
+			$page = $this->request->getGet('page') ?? 1;
+			
+            $data['posts'] = $postModel->paginate($offset);
             $data['pager'] = $postModel->pager;
-
+			
+			foreach ($data['posts'] as $idx => &$post) {
+				$post->no = $postCnt - (($page - 1) * $offset) - $idx;
+				$post->title = mb_substr($post->title, 0, 10);
+			}
            
 
             $returnView = 'main'; 
@@ -77,8 +85,10 @@ class PostController extends BaseController
 
         } else {
             $data['post'] = new stdClass();
-            foreach ($columns as $column) 
-                $data['post']->{$column} = '';
+            foreach ($columns as $column) {
+				$data['post']->{$column} = '';
+			}
+                
             
             $data['form']['method'] = 'POST';
             $data['form']['action'] = "/posts";
@@ -109,7 +119,7 @@ class PostController extends BaseController
     public function new()
     {
         $rules = [
-            'title' => 'required|max_length[40]',
+            'title' => 'required|max_length[200]',
             'content' => 'required',
             'category_id' => 'required|integer'
         ];
@@ -117,7 +127,7 @@ class PostController extends BaseController
         $messages = [
             'title' => [
                 'required' => '제목을 입력해주세요.',
-                'max' => '제목은 최대 40자 까지 입니다.'
+                'max' => '제목은 최대 200자 까지 입니다.'
             ],
             'content' => ['required' => '내용은 반드시 입력해야합니다.'],
             'category_id' => [
@@ -125,15 +135,17 @@ class PostController extends BaseController
                 'integer' => '반드시 숫자여야 합니다.'
             ],
         ];
+	
+	    $data = $this->request->getPost(['title', 'content', 'category_id']);
 
-        if (! $this->validate($rules, $messages)) {
+        if (! $this->validateData($data, $rules, $messages)) {
             $firstErrKey = array_key_first($this->validator->getErrors());
+			log_message('info', $this->validator->getErrors()[$firstErrKey]);
             return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey])->withInput();
             exit;
         }
         $purifier = new HTMLPurifier();
 
-        $data = $this->request->getPost();
 		
 		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
         $data['content'] = $purifier->purify($data['content']);
@@ -185,6 +197,6 @@ class PostController extends BaseController
 			$newId = $tempPostModel->getInsertId();
 		}		
 		
-		return $this->response->setJSON(['error' => false , 'newId' => $newId, 'tempLists' =>  $tempPostModel->findAll()]);
+		return $this->response->setJSON(['error' => false , 'newId' => $newId, 'tempLists' =>  $tempPostModel->orderBy('updated_at', 'DESC')->findAll()]);
 	}
 }
