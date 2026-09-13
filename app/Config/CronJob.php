@@ -6,6 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 use Daycry\CronJob\Scheduler;
 use Daycry\CronJob\Loggers\Database as DatabaseLogger;
 use Daycry\CronJob\Loggers\File as FileLogger;
+use CodeIgniter\Database\RawSql;
 
 class CronJob extends \Daycry\CronJob\Config\CronJob
 {
@@ -160,6 +161,10 @@ class CronJob extends \Daycry\CronJob\Config\CronJob
 					
 		})->daily('00:00');
 		
+	$schedule->call(function() {
+		$tempPostModel = model('TemporaryPost');
+		$tempPostModel->where(new RawSql('created_at <= DATE_SUB(NOW(), INTERVAL 7 DAY)'))->delete();
+	})->daily('02:00');
         // $schedule->command('foo:bar')->everyMinute();
 
         // $schedule->shell('cp foo bar')->daily( '11:00 pm' );

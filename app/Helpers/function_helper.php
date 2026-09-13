@@ -27,12 +27,9 @@ if (! function_exists('ipWhiteListIpAddr')) {
 if (! function_exists('calcAgeForKor')) {
 	function calcAgeForKor(string $birthDate) {
 		$birthDate = new DateTime($birthDate);
-		
+
 		$now = new DateTime();
-		$birthYear = $birthDate->format('Y');
-		
-		$thisBirthDate = new DateTime($now->format('Y') . '-' . $birthDate->format('m-d'));
-		
-		return (int)$now->format('Y') - (int)$birthYear + ((bool) ( $now->getTimeStamp() >= $thisBirthDate->getTimeStamp() ));
+				
+		return ( ($now->format('Y') - $birthDate->format('Y')) + ((bool) ( ((int) $now->format('md')) >= ((int) $birthDate->format('md')) )) );
 	}
 }

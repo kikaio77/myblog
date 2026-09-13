@@ -1,0 +1,38 @@
+[
+    {
+        "name": "closure_18e08d2fe39d2c553668024454aa3f8b",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-09-06 02:13:01",
+        "end_at": "2026-09-06 02:13:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": "\"CodeIgniter\\\\Database\\\\Exceptions\\\\DataException: There is no data to update. in \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php:993\\nStack trace:\\n#0 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php(993): CodeIgniter\\\\Database\\\\Exceptions\\\\DataException::forEmptyDataset()\\n#1 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Model.php(860): CodeIgniter\\\\BaseModel->update()\\n#2 \\\/var\\\/www\\\/html\\\/myblog\\\/app\\\/Config\\\/CronJob.php(166): CodeIgniter\\\\Model->update()\\n#3 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Config\\\\CronJob->Config\\\\{closure}()\\n#4 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Closure->__invoke()\\n#5 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(161): Daycry\\\\CronJob\\\\Job->runClosure()\\n#6 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/JobRunner.php(90): Daycry\\\\CronJob\\\\Job->run()\\n#7 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Commands\\\/Run.php(83): Daycry\\\\CronJob\\\\JobRunner->run()\\n#8 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Commands.php(74): Daycry\\\\CronJob\\\\Commands\\\\Run->run()\\n#9 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Console.php(47): CodeIgniter\\\\CLI\\\\Commands->run()\\n#10 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(388): CodeIgniter\\\\CLI\\\\Console->run()\\n#11 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(133): CodeIgniter\\\\Boot::runCommand()\\n#12 \\\/var\\\/www\\\/html\\\/myblog\\\/spark(87): CodeIgniter\\\\Boot::bootSpark()\\n#13 {main}\"",
+        "test_time": null
+    },
+    {
+        "name": "closure_18e08d2fe39d2c553668024454aa3f8b",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-09-06 02:12:02",
+        "end_at": "2026-09-06 02:12:02",
+        "duration": "00:00:00",
+        "output": null,
+        "error": "\"CodeIgniter\\\\Database\\\\Exceptions\\\\DataException: There is no data to update. in \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php:993\\nStack trace:\\n#0 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php(993): CodeIgniter\\\\Database\\\\Exceptions\\\\DataException::forEmptyDataset()\\n#1 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Model.php(860): CodeIgniter\\\\BaseModel->update()\\n#2 \\\/var\\\/www\\\/html\\\/myblog\\\/app\\\/Config\\\/CronJob.php(166): CodeIgniter\\\\Model->update()\\n#3 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Config\\\\CronJob->Config\\\\{closure}()\\n#4 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Closure->__invoke()\\n#5 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(161): Daycry\\\\CronJob\\\\Job->runClosure()\\n#6 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/JobRunner.php(90): Daycry\\\\CronJob\\\\Job->run()\\n#7 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Commands\\\/Run.php(83): Daycry\\\\CronJob\\\\JobRunner->run()\\n#8 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Commands.php(74): Daycry\\\\CronJob\\\\Commands\\\\Run->run()\\n#9 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Console.php(47): CodeIgniter\\\\CLI\\\\Commands->run()\\n#10 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(388): CodeIgniter\\\\CLI\\\\Console->run()\\n#11 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(133): CodeIgniter\\\\Boot::runCommand()\\n#12 \\\/var\\\/www\\\/html\\\/myblog\\\/spark(87): CodeIgniter\\\\Boot::bootSpark()\\n#13 {main}\"",
+        "test_time": null
+    },
+    {
+        "name": "closure_18e08d2fe39d2c553668024454aa3f8b",
+        "type": "closure",
+        "action": "{}",
+        "environment": null,
+        "start_at": "2026-09-06 02:11:01",
+        "end_at": "2026-09-06 02:11:01",
+        "duration": "00:00:00",
+        "output": null,
+        "error": "\"CodeIgniter\\\\Database\\\\Exceptions\\\\DataException: There is no data to update. in \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php:993\\nStack trace:\\n#0 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/BaseModel.php(993): CodeIgniter\\\\Database\\\\Exceptions\\\\DataException::forEmptyDataset()\\n#1 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Model.php(860): CodeIgniter\\\\BaseModel->update()\\n#2 \\\/var\\\/www\\\/html\\\/myblog\\\/app\\\/Config\\\/CronJob.php(166): CodeIgniter\\\\Model->update()\\n#3 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Config\\\\CronJob->Config\\\\{closure}()\\n#4 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(252): Closure->__invoke()\\n#5 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Job.php(161): Daycry\\\\CronJob\\\\Job->runClosure()\\n#6 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/JobRunner.php(90): Daycry\\\\CronJob\\\\Job->run()\\n#7 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/daycry\\\/cronjob\\\/src\\\/Commands\\\/Run.php(83): Daycry\\\\CronJob\\\\JobRunner->run()\\n#8 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Commands.php(74): Daycry\\\\CronJob\\\\Commands\\\\Run->run()\\n#9 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/CLI\\\/Console.php(47): CodeIgniter\\\\CLI\\\\Commands->run()\\n#10 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(388): CodeIgniter\\\\CLI\\\\Console->run()\\n#11 \\\/var\\\/www\\\/html\\\/myblog\\\/vendor\\\/codeigniter4\\\/framework\\\/system\\\/Boot.php(133): CodeIgniter\\\\Boot::runCommand()\\n#12 \\\/var\\\/www\\\/html\\\/myblog\\\/spark(87): CodeIgniter\\\\Boot::bootSpark()\\n#13 {main}\"",
+        "test_time": null
+    }
+]

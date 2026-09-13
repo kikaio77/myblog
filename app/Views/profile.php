@@ -46,6 +46,8 @@
 
 <h6 class="pointer-lg fs-5 mb-3">경력사항</h6>
 <dl class="row mb-5">
+	<dt class="col-5 col-md-2 text-primary">2026.08.14</dt>
+    <dd class="col-7 col-md-9 text-success">정보처리기사 필기 합격</dd>
     <dt class="col-5 col-md-2 text-primary">2025</dt>
     <dd class="col-7 col-md-9 text-success">(주)씨앤에이커뮤니케이션즈</dd>
     <dt class="col-5 col-md-2 text-primary"></dt>

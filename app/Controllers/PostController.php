@@ -142,7 +142,6 @@ class PostController extends BaseController
             $firstErrKey = array_key_first($this->validator->getErrors());
 			log_message('info', $this->validator->getErrors()[$firstErrKey]);
             return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey])->withInput();
-            exit;
         }
         $purifier = new HTMLPurifier();
 

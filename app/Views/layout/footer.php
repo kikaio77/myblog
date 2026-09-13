@@ -1,6 +1,6 @@
 <footer class="py-4 shadow-sm">
     <div class="footerInner text-center fw-normal">
-        Copyright <?= date('Y') ?> ⓒ 임승혁.  All right reserved.
+        Copyright <?= date('Y') ?> ⓒ 임승혁.  All right reserved.<br><strong>Developed using CodeIgniter4</strong>
     </div>
 </footer>
 
@@ -53,7 +53,6 @@ modal.addEventListener('show.bs.modal', (e) => {
                     <div class="row">
                         <div class="col">
                             <?= csrf_field() ?>
-                            <label class="form-label fs-6 fw-bold">닉네임 변경</label>
 							 <input type="hidden" name="old_nick" id="old_nick" value="<?= session()->has('user') && session()->get('user')->nick ? session()->get('user')->nick : ''  ?>">
                             <input class="form-control" type="text" name="nick" id="nick" value="<?= session()->has('user') && session()->get('user')->nick ? session()->get('user')->nick : ''  ?>">
                         </div>
