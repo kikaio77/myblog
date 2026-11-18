@@ -6,11 +6,11 @@ use App\Models\Post;
 
 class CategoryCell 
 {
-    public static function subNavCategory(): string
+    public static function subNavCategory($isAdmin): string
     {
         $postModel = model('Post');
 
-        $categories = $postModel->getPostCountByCategory();
+        $categories = $postModel->getPostCountByCategory($isAdmin);
 
         $html = [];
 

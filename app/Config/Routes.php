@@ -28,6 +28,7 @@ $routes->group('category', static function($routes) {
 	$routes->get('edit', 'Category::edit');
 	$routes->post('put', 'Category::put');
 	$routes->post('delete', 'Category::drop');
+	$routes->post('secret/edit', 'Category::editSecret');
 });
 $routes->get('/main', 'Home::index');
 $routes->get('/profile', 'Home::profile');
@@ -59,6 +60,10 @@ $routes->group('oauth', static function($routes) {
 
 $routes->group('mypage', static function($routes){
     $routes->post('putnick', 'MyPage::putNick');
+});
+
+$routes->group('synips', static function($routes){
+    $routes->get('/', 'SynIps');
 });
 
 $routes->get('test', static function(){

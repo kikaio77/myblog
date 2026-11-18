@@ -27,8 +27,21 @@ class Category extends BaseController
 			}
             $builder->where('categories.name', $categoryName);
         }
-        $builder->where('posts.deleted_at IS NULL')
-                ->orderBy('posts.id', 'DESC');
+		
+		$session = session();
+		
+		$user = $session->get('user');
+		
+		$isAdmin = $user && $user->is_admin;
+		
+        $builder->where('posts.deleted_at IS NULL');
+		
+		if (!$isAdmin) {
+			$builder->where('posts.is_secret', 0);
+			$builder->where('categories.is_secret', 0);
+		}
+		
+        $builder->orderBy('posts.id', 'DESC');
         $postCnt = $builder->countAllResults(false);
 
         $query = $builder->get()->getResult();
@@ -131,5 +144,23 @@ class Category extends BaseController
 		
 		return $this->response->setJSON(compact('error', 'message'));
 		
+	}
+	
+	public function editSecret()
+	{	
+		$result = ['error' => false, 'message' => '숨김 여부 상태가 변경 되었습니다.'];
+	
+		$cid = $this->request->getPost('cid');
+		$isSecret = (int) $this->request->getPost('is_secret');
+		
+		$categoryModel = model('Category');
+		
+		if (!$categoryModel->update($cid, ['is_secret' => $isSecret])) {
+			$result['error'] = true;
+			$result['message'] = '숨김 여부 상태 변경이 실패하였습니다.';
+			$result['detail']  = $categoryModel->errors();
+		}
+		
+		return $this->response->setJSON($result);
 	}
 }

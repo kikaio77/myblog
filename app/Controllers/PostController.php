@@ -5,37 +5,38 @@ namespace App\Controllers;
 use App\Models\Post;
 use App\Models\Category;
 use HTMLPurifier;
+use HTMLPurifier_Config;
 use stdClass;
 
 class PostController extends BaseController
 {
     public function list($id = null)
-    {   
+    {
         $postModel = model('Post');
 
         $session = session();
         $data = [];
         if ($id) {
-            
+
 			$userIp = $this->request->getIPAddress();
-			
+
             $redis = \Config\Services::redis();
-			
+
 			$accessKey = "$userIp:blog_views";
-			
+
             $views = $redis->hget($accessKey, $id);
-            
+
             $data['post'] = $postModel->find($id);
-			
+
 			if (! $data['post']) {
 				throw new \CodeIgniter\Exceptions\PageNotFoundException($_ENV['error.message.404']);
 			}
             $data['pager'] = null;
-		
+
 			$tomorrowMidnight = strtotime('tomorrow midnight +2 minutes');
-			
+
 			$expireSec = $tomorrowMidnight - $_SERVER['REQUEST_TIME'];
-			
+
             if (! $views) {
                 $redis->hset($accessKey, $id, 1);
                 $postModel->update($id, ['views' => $data['post']->views + 1]);
@@ -49,20 +50,20 @@ class PostController extends BaseController
             $returnView = 'postDetail';
         } else {
 			$postCnt = $postModel->countAllResults();
-			
+
 			$offset = $_ENV['app.pagination.offset'];
 			$page = $this->request->getGet('page') ?? 1;
-			
+
             $data['posts'] = $postModel->paginate($offset);
             $data['pager'] = $postModel->pager;
-			
+
 			foreach ($data['posts'] as $idx => &$post) {
 				$post->no = $postCnt - (($page - 1) * $offset) - $idx;
 				$post->title = mb_substr($post->title, 0, 10);
 			}
-           
 
-            $returnView = 'main'; 
+
+            $returnView = 'main';
         }
 
         return view($returnView, $data);
@@ -70,16 +71,16 @@ class PostController extends BaseController
 
 
     public function form($id = '')
-    {   
+    {
         $categoryModel = model('Category');
         $postModel = model('Post');
 		$tempPostModel = model('TemporaryPost');
-        $columns = ['id', 'category_id', 'title', 'content', 'views', 'created_at'];
+        $columns = ['id', 'category_id', 'title', 'content', 'views', 'created_at', 'is_secret'];
 
         $data = [];
 
         if ($id) {
-            $data['post'] = $postModel->select($columns)->find($id); 
+            $data['post'] = $postModel->select($columns)->find($id);
             $data['form']['method'] = 'PUT';
             $data['form']['action'] = "/posts/{$id}";
 
@@ -88,26 +89,26 @@ class PostController extends BaseController
             foreach ($columns as $column) {
 				$data['post']->{$column} = '';
 			}
-                
-            
+
+
             $data['form']['method'] = 'POST';
             $data['form']['action'] = "/posts";
         }
 		$data['tempPosts'] = $tempPostModel->withDeleted(false)->orderBy('updated_at', 'DESC')->findAll();
         $data['categories'] = $categoryModel->withDeleted(false)->findAll();
-        
+
         return view('writeForm', $data);
     }
 
     public function update($id)
     {
-        $purifier = new HTMLPurifier();
-
         $data = $this->request->getVar();
+		
+		$data['is_secret'] = (int)(isset($data['is_secret']) && $data['is_secret'] === 'on');
         $data['title'] = empty($data['title']) ? '제목없음' : $data['title'];
 		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
-        $data['content'] = $purifier->purify($data['content']);
-        
+        $data['content'] = $this->purify($data['content']);
+
         $postModel = model('Post');
 
         $postModel->save($data);
@@ -135,7 +136,7 @@ class PostController extends BaseController
                 'integer' => '반드시 숫자여야 합니다.'
             ],
         ];
-	
+
 	    $data = $this->request->getPost(['title', 'content', 'category_id']);
 
         if (! $this->validateData($data, $rules, $messages)) {
@@ -143,12 +144,10 @@ class PostController extends BaseController
 			log_message('info', $this->validator->getErrors()[$firstErrKey]);
             return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey])->withInput();
         }
-        $purifier = new HTMLPurifier();
 
-		
 		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
-        $data['content'] = $purifier->purify($data['content']);
-		
+        $data['content'] = $this->purify($data['content']);
+
         $postModel = model('Post');
 
         $postModel->insert($data);
@@ -158,31 +157,29 @@ class PostController extends BaseController
         return redirect()->to('/main');
 
     }
-	
+
 	public function delete($id) {
-		
+
 		$postModel = model('Post');
-		
+
 		if (! $postModel->delete($id)) {
 			return $this->response->setJSON(['error' =>  true, 'message' => '삭제에 실패했습니다.']);
 		}
-		
+
 		return $this->response->setJSON(['error' =>  false, 'message' => '삭제 성공!']);
 	}
-	
+
 	public function tempSave() {
 		$reqData = $this->request->getJSON();
-		
+
 		$tempPostModel = model('TemporaryPost');
-		
-		$purifier = new HTMLPurifier;
 
 		$saveData = [
 			'title' => $reqData->title,
-			'content' => $purifier->purify($reqData->content),
+			'content' => $this->purify($reqData->content),
 		];
-		
-		
+
+
 		if (!empty($reqData->id)) {
 			$saveData['id'] = $reqData->id;
 			if (! $tempPostModel->save($saveData)) {
@@ -194,8 +191,39 @@ class PostController extends BaseController
 				return $this->response->setJSON(['error' => false]);
 			}
 			$newId = $tempPostModel->getInsertId();
-		}		
-		
+		}
+
 		return $this->response->setJSON(['error' => false , 'newId' => $newId, 'tempLists' =>  $tempPostModel->orderBy('updated_at', 'DESC')->findAll()]);
+	}
+
+	/**
+	 * Quill 2 본문용 HTMLPurifier
+	 * - 기본 설정은 data-* 속성을 지워서 코드블록 언어(<pre data-language="php">)가 사라지므로 허용
+	 * - 표(table/tbody/tr/td)는 기본 설정으로 허용됨
+	 *   (td의 data-row는 지워져도 Quill이 다시 불러올 때 행을 자동 계산함)
+	 */
+	private function purify(?string $html): string
+	{
+		static $purifier = null;
+
+		if ($purifier === null) {
+			$cachePath = WRITEPATH . 'cache/htmlpurifier';
+			if (! is_dir($cachePath)) {
+				mkdir($cachePath, 0755, true);
+			}
+
+			$config = HTMLPurifier_Config::createDefault();
+			$config->set('Cache.SerializerPath', $cachePath);
+			$config->set('HTML.DefinitionID', 'quill2-content');
+			$config->set('HTML.DefinitionRev', 1); // 아래 허용 규칙을 바꾸면 숫자를 올려야 캐시가 갱신됨
+
+			if ($def = $config->maybeGetRawHTMLDefinition()) {
+				$def->addAttribute('pre', 'data-language', 'Text');
+			}
+
+			$purifier = new HTMLPurifier($config);
+		}
+
+		return $purifier->purify($html ?? '');
 	}
 }

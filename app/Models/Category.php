@@ -8,7 +8,7 @@ class Category extends Model
 {
     protected $table = 'categories';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id', 'name'];
+    protected $allowedFields = ['id', 'name', 'is_secret'];
     protected $useTimestamps = true;
     protected $returnType = 'object';
 	
@@ -28,7 +28,7 @@ class Category extends Model
 	
 	public function get() {
 		$sql = "SELECT 
-					id, name, created_at
+					id, name, created_at, is_secret
 				FROM categories
 				WHERE deleted_at IS NULL";
 			

@@ -12,7 +12,8 @@
 		</div>
 	</li>
 	<?php if ($isAdmin): ?>
-	<li><a href="/posts/form" class="fs-6"><i class="me-2 xi-pen"></i>글쓰기</a></li>
+	<li class="mb-1"><a href="/posts/form" class="fs-7"><i class="me-2 xi-pen"></i>글쓰기</a></li>
+	<li><a href="/synips" class="fs-7"><i class="me-2 xi-check-square"></i>SYN 체크</a></li>
 	<?php endif; ?>
 </ul>
 <div class="sb-menu">
@@ -31,7 +32,7 @@
 	</h5>
 		<li class="nav-item sb-menu-item-child">
 			<a href="/main" class="nav-link sb-menu-link active">전체보기</a>
-			<?= view_cell('App\Cells\CategoryCell::subNavCategory', [], 7200, 'subNavCategory') ?>
+			<?= view_cell('App\Cells\CategoryCell::subNavCategory', ['isAdmin' => $isAdmin], 120, 'subNavCategory') ?>
 		</li>
 	</ul>
 </div>

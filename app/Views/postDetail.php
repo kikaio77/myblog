@@ -3,19 +3,37 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <style>
-    /* Quill 기본 스타일 덮어쓰기 */
-    pre.ql-syntax {
+    /* 코드블록: 예전 글(Quill 1, pre.ql-syntax) + 새 글(Quill 2, pre[data-language]) */
+    .article pre.ql-syntax,
+    .article pre[data-language] {
         background-color: #f3f3f3 !important; /* 라이트 테마 */
         color: inherit !important;
         border-radius: 6px;
         padding: 1em;
         overflow-x: auto;
+        white-space: pre;
     }
+    .article pre[data-language].hljs { padding: 1em; }
+
+    /* 표 (Quill 2) */
+    .article table { border-collapse: collapse; width: 100%; margin: .5em 0; table-layout: fixed; }
+    .article td, .article th { border: 1px solid #ccc; padding: 4px 8px; vertical-align: top; word-break: break-word; }
+
+    /* 정렬 / 들여쓰기 (Quill 클래스) */
+    .article .ql-align-center { text-align: center; }
+    .article .ql-align-right { text-align: right; }
+    .article .ql-align-justify { text-align: justify; }
+    <?php for ($i = 1; $i <= 8; $i++): ?>
+    .article .ql-indent-<?= $i ?> { padding-left: <?= $i * 3 ?>em; }
+    <?php endfor; ?>
+
+    /* 인용 */
+    .article blockquote { border-left: 4px solid #ccc; margin: .5em 0; padding-left: 1em; color: #555; }
 </style>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h4 class="content-title"><?= $post->title ?></h4>
+<h4 class="content-title"><?= esc($post->title) ?></h4>
 <div class="row align-items-center justify-content-between mb-1">
     <div class="col-2 gap-1 d-flex">
       <?php if (session()->has('user') && session()->get('user')->is_admin == 1 ): ?>
@@ -61,7 +79,19 @@
  
 let isClickReplyBtn = false;
 
-document.querySelectorAll('pre code').forEach(block => {
+// 코드 강조
+// - 새 글(Quill 2): <pre data-language="php"> → 저장된 언어로 강조
+// - 예전 글(Quill 1): pre.ql-syntax는 저장할 때 이미 강조된 상태라 그대로 둠
+document.querySelectorAll('.article pre[data-language]').forEach(pre => {
+    const lang = pre.dataset.language;
+    if (lang && lang !== 'plain' && hljs.getLanguage(lang)) {
+        pre.classList.add('language-' + lang);
+    } else {
+        pre.classList.add('nohighlight');
+    }
+    hljs.highlightElement(pre);
+});
+document.querySelectorAll('.article pre code').forEach(block => {
     hljs.highlightElement(block);
 });
 

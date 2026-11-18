@@ -10,11 +10,23 @@ class Home extends BaseController
     {   
 		helper('function');
 		
+		$session = session();
+		
+		$user = $session->get('user');
+		
         $page = $this->request->getGet('page') ?? 1;
         $postModel = model('Post');
 		$offset = $_ENV['app.pagination.offset'];
 		
-        $postsCnt = $postModel->where('deleted_at IS NULL')->countAllResults();
+        $postModel->where('deleted_at IS NULL');
+		
+		$isAdmin = $user && $user->is_admin;
+		
+		if (!$isAdmin) {
+			$postModel->where('is_secret', 0);
+		}
+		
+		$postsCnt = $postModel->countAllResults(false);
 
         $posts = $postModel->orderby('id', 'DESC')->paginate($offset);
 		$now = $_SERVER['REQUEST_TIME'];

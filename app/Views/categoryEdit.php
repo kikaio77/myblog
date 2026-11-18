@@ -13,6 +13,7 @@
             <th class="text-center"><input type="checkbox" name="allChk" id="allChk" class="form-check-input"></th>
             <th class="text-center">제목</th>
             <th class="text-center">작성일</th>
+			 <th class="text-center">숨김여부</th>
         </tr>
         <tbody>
         <?php if ($categories): ?>
@@ -22,6 +23,9 @@
 						<div class="form-check text-center"><input type="checkbox" name="categories[]" value="<?= $category->id ?>" class="form-check-input"></div></td>
                     <td class="text-center"><?= $category->name ?></td>
                     <td class="text-center"><?= $category->created_at ?></td>
+					<td class="text-center">
+						<div class="form-check form-switch"><input type="checkbox" name="is_secret" id="is_secret" class="form-check-input" <?= $category->is_secret ? 'checked' : '' ?> data-cid="<?= $category->id ?>" data-action="editSecret"></div>
+					</td>
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>
@@ -106,6 +110,32 @@ document.addEventListener('click', e => {
 		
 		categoryChks.forEach( chk => chk.checked = e.target.checked );
 	
+	}
+	
+	if (e.target.dataset.action === 'editSecret') {
+		const csrfToken = document.querySelector('meta[name="X-CSRF-TOKEN"]').content;
+		console.log(e.target.checked);
+		fetch('/category/secret/edit', {
+			headers: {
+				'X-CSRF-TOKEN': csrfToken,
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'x-requested-with-with': 'XMLHttpRequest',
+			},
+			method: 'POST',
+			
+			body: new URLSearchParams({ cid: e.target.dataset.cid, is_secret: Number(e.target.checked) })
+		})
+		.then((res) => res.json())
+		.then(d => {
+			showModal(modal, {
+							title: '알림', 
+							body: `
+									<p>${d.message}</p>
+								`,
+						
+			});
+		})
+		
 	}
 
 });
