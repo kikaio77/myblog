@@ -54,8 +54,6 @@ class Login extends BaseController
 
         if (!$this->validateData($inputs, $rules, $messages)) {
             $firstErrKey =  array_key_first($this->validator->getErrors());
-			log_message('info', $this->validator->getErrors()[$firstErrKey]);
-
             return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey]);
         }
         $validInputs = $this->validator->getValidated();
@@ -67,18 +65,18 @@ class Login extends BaseController
         }
 
         if (! password_verify($validInputs['password'], $user->password)) {
-			log_message('info', '비밀번호 안맞음');
             return redirect()->back()->with('error', '아이디 혹은 비밀번호가 일치하지 않습니다.');
         }
-
+		
+		unset($user->password);
         $this->session->set('user', $user);
 
+		cache()->delete('subNavCategory');
         return redirect('/');
     }
 
     public function out()
     {
-        log_message('error', '이거탐?');
         $this->session->destroy();
 
         return redirect('/');

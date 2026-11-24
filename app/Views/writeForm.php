@@ -16,6 +16,8 @@
 /* 편집기 안 표 테두리 */
 #editor .ql-editor table { border-collapse: collapse; width: 100%; }
 #editor .ql-editor td { border: 1px solid #ccc; padding: 4px 8px; min-width: 40px; }
+.ql-snow .ql-editor .ql-code-block-container{ background-color: #f9f3f3 !important;}
+.ql-snow .ql-editor .ql-code-block-container{ border: 1px solid #ccc !important;}
 </style>
 
 <?= csrf_meta() ?>
@@ -37,7 +39,7 @@
         <input type="hidden" name="_method" value="<?= $form['method'] ?>">
         <input type="hidden" name="id" value="<?= $post->id ?>" id="id">
         <input type="hidden" name="content" id="content">
-		<div class="row align-items-center">
+        <div class="row align-items-center">
 			<div class="col">
 				<div class="form-check form-switch"><input type="checkbox" name="is_secret" id="is_secret" class="form-check-input" <?= $post->is_secret ? 'checked' : '' ?>><label for="is_secret" class="form-check-label">비밀글</label></div>
 			</div>
@@ -50,7 +52,6 @@
 				</select>
 			</div>
 		</div>
-        
         <div class="col mb-2">
           <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="<?= $post->title ?>">
         </div>
@@ -205,7 +206,10 @@ Object.entries(TABLE_BUTTONS).forEach(([name, [label, title]]) => {
 // - getSemanticHTML: 편집용 UI(코드 언어 선택 박스 등) 없이 <ul>/<ol>, <pre data-language>, <table> 형태로 출력
 // - 일부 버전에서 공백이 &nbsp;로 바뀌어 줄바꿈이 안 되는 문제가 있어 일반 공백으로 되돌림
 function getSaveHtml() {
-    return editor.getSemanticHTML().replace(/&nbsp;/g, ' ');
+    return editor.getSemanticHTML()
+        .replace(/&nbsp;/g, ' ')
+        // 빈 줄이 <p></p>로 나와서 높이 0이 되는 문제 → 편집기와 같은 <p><br></p>로 저장
+        .replace(/<(p|h[1-6])([^>]*)><\/\1>/g, '<$1$2><br></$1>');
 }
 
 // 저장된 HTML을 Quill 형식으로 변환해서 넣기 (표 포함)

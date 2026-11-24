@@ -6,7 +6,7 @@
     /* 코드블록: 예전 글(Quill 1, pre.ql-syntax) + 새 글(Quill 2, pre[data-language]) */
     .article pre.ql-syntax,
     .article pre[data-language] {
-        background-color: #f3f3f3 !important; /* 라이트 테마 */
+        background-color: #f9f3f3 !important; /* 라이트 테마 */
         color: inherit !important;
         border-radius: 6px;
         padding: 1em;
@@ -27,8 +27,13 @@
     .article .ql-indent-<?= $i ?> { padding-left: <?= $i * 3 ?>em; }
     <?php endfor; ?>
 
+    /* 문단: 편집기(Quill)와 같게 문단 사이 여백 없이, 빈 줄은 한 줄 높이로 */
+    .article h1, .article h2, .article h3 { margin: 0; }
+    .article p:empty::before { content: '\00a0'; } /* 이미 <p></p>로 저장된 예전 글 대비 */
+
     /* 인용 */
     .article blockquote { border-left: 4px solid #ccc; margin: .5em 0; padding-left: 1em; color: #555; }
+	.hljs{ border: 1px solid #ccc;}
 </style>
 <?= $this->endSection() ?>
 
@@ -133,7 +138,7 @@ document.addEventListener('submit', e => {
 				alert(d.message);
 				if (! d.error) {
 					
-					window.location.href = '/';
+					console.log('이거탐');
 				}
 			});
     }

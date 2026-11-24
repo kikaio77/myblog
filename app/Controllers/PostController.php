@@ -16,6 +16,7 @@ class PostController extends BaseController
 
         $session = session();
         $data = [];
+		
         if ($id) {
 
 			$userIp = $this->request->getIPAddress();
@@ -137,14 +138,14 @@ class PostController extends BaseController
             ],
         ];
 
-	    $data = $this->request->getPost(['title', 'content', 'category_id']);
+	    $data = $this->request->getPost(['title', 'content', 'category_id', 'is_secret']);
 
         if (! $this->validateData($data, $rules, $messages)) {
             $firstErrKey = array_key_first($this->validator->getErrors());
 			log_message('info', $this->validator->getErrors()[$firstErrKey]);
             return redirect()->back()->with('error', $this->validator->getErrors()[$firstErrKey])->withInput();
         }
-
+		$data['is_secret'] = (int)(isset($data['is_secret']) && $data['is_secret'] === 'on');
 		$data['content'] = strtr($data['content'], ['<img' => '<img class=\'img-fluid\'']);
         $data['content'] = $this->purify($data['content']);
 

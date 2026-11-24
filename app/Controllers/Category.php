@@ -160,7 +160,7 @@ class Category extends BaseController
 			$result['message'] = '숨김 여부 상태 변경이 실패하였습니다.';
 			$result['detail']  = $categoryModel->errors();
 		}
-		
+		cache()->delete('subNavCategory');
 		return $this->response->setJSON($result);
 	}
 }

@@ -65,11 +65,16 @@ footer{ background-color: #ccc;}
 .border-nowwe{border: 1px solid #599080 !important;}
 .bg-nowwe:hover{ transform: translateY(-10px); transition: all 0.15s ease-in-out; box-shadow: 0 0 6px 0 #FFD06B;}
 
-#wrapLoginFm{ width: 100%; height: 100%;}
+#wrapLoginFm{ width: 100%; height: 100%; }
+#wrapLoginFm > div { max-width: 480px; }
 #commentList{ margin-top: 1rem; display: flex; flex-direction: column; align-items: flex-end;}
 .commentItem{  display: flex; align-items: flex-start;}
 
 .dropdown-menu{ z-index: 2000 !important; }
+
+/* quill 에디터 */
+.ql-snow .ql-editor .ql-code-block-container { background-color: none !important;}
+/* quill 에디터 끝*/
 @media all and (min-width: 480px) {
     #topNav .navbar-brand{ width: 234px;}
 }

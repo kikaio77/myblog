@@ -13,7 +13,7 @@
 </head>
 <body>
     <div id="wrapLoginFm" class="d-flex align-items-center justify-content-center" style="background-color: #599080;">
-        <div class="col-9 col-sm-6 col-md-3">
+        <div class="col-10 col-sm-9" style="max-width: 420px;">
             <form class="loginFm card" action="/login/in" id="loginFm" method="POST">
                 <?= csrf_field() ?>
                 <div class="card-header fs-5 fw-semibold">로그인</div>
